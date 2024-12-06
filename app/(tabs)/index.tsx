@@ -45,9 +45,13 @@ export default function OnboardingScreen() {
   const flatListRef = useRef<FlatList<Step>>(null);
 
   const handleNext = () => {
-    if (flatListRef.current) {
+    if (flatListRef.current && currentStep < steps.length - 1) {
       flatListRef.current.scrollToIndex({ index: currentStep + 1 });
       setCurrentStep((prev) => prev + 1);
+    }
+    if (currentStep == steps.length - 1) {
+      // Navigate to 0 index
+      setCurrentStep(0);
     }
   };
 
