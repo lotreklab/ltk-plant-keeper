@@ -51,6 +51,7 @@ export default function OnboardingScreen() {
     }
     if (currentStep == steps.length - 1) {
       // Navigate to 0 index
+      flatListRef.current?.scrollToIndex({ index: 0 });
       setCurrentStep(0);
     }
   };
