@@ -112,12 +112,13 @@ const styles = StyleSheet.create({
   containerinner: {
     flex: 1,
     backgroundColor: '#fff',
-    marginTop: '10%',
+    marginTop: '15%',
     marginBottom: '10%',
   },
   stepContainer: {
     width: width,
     alignItems: 'center',
+    justifyContent: 'center',
     paddingHorizontal: 20,
   },
   image: {
