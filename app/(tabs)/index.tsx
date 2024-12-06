@@ -1,11 +1,19 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { Image, StyleSheet, Platform, Button, Text } from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { useDispatch, useSelector } from 'react-redux';
+import { decrement, increment } from '@/store/reducers/counter'
+import { useEffect } from 'react';
 
 export default function HomeScreen() {
+  const count = useSelector(state => state.counter.value)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    console.log('count:', count)
+  }, [count])
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -21,6 +29,11 @@ export default function HomeScreen() {
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 1: Try it</ThemedText>
+        <Button
+          title='Increment'
+          onPress={() => dispatch(increment())}
+        />
+        <ThemedText>{count}</ThemedText>
         <ThemedText>
           Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
           Press{' '}
