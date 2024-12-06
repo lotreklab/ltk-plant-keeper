@@ -138,31 +138,27 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   dot: {
-    width: 10,
-    height: 10,
+    width: 7,
+    height: 7,
     borderRadius: 5,
-    backgroundColor: '#ddd',
+    backgroundColor: '#DBDBDB',
     marginHorizontal: 5,
   },
   activeDot: {
-    backgroundColor: '#333',
-  },
-  buttonContainer: {
-    position: 'absolute',
-    bottom: 30, // Ensure button is visible above the safe area
-    left: 0,
-    right: 0,
-    alignItems: 'center',
+    backgroundColor: '#2DDA93',
   },
   nextButton: {
-    backgroundColor: '#333',
+    backgroundColor: '#2DDA93',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
+    alignSelf: 'center',
+    width: '90%',
   },
   nextButtonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
