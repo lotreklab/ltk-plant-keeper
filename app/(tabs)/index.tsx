@@ -7,8 +7,8 @@ import {
   FlatList,
   TouchableOpacity,
   Dimensions,
-  SafeAreaView
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context'; // Ensure this is installed and imported
 
 const { width } = Dimensions.get('window');
 
@@ -48,8 +48,6 @@ export default function OnboardingScreen() {
     if (flatListRef.current) {
       flatListRef.current.scrollToIndex({ index: currentStep + 1 });
       setCurrentStep((prev) => prev + 1);
-    } else {
-      console.error('FlatList reference is not initialized');
     }
   };
 
@@ -76,7 +74,7 @@ export default function OnboardingScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <FlatList
         data={steps}
         horizontal
@@ -93,11 +91,13 @@ export default function OnboardingScreen() {
         ref={flatListRef}
       />
       {renderDots()}
-      <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-        <Text style={styles.nextButtonText}>
-          {currentStep === steps.length - 1 ? 'GET STARTED' : 'NEXT'}
-        </Text>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+          <Text style={styles.nextButtonText}>
+            {currentStep === steps.length - 1 ? 'GET STARTED' : 'NEXT'}
+          </Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
@@ -145,12 +145,18 @@ const styles = StyleSheet.create({
   activeDot: {
     backgroundColor: '#333',
   },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 30, // Ensure button is visible above the safe area
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+  },
   nextButton: {
     backgroundColor: '#333',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    alignSelf: 'center',
   },
   nextButtonText: {
     color: '#fff',
