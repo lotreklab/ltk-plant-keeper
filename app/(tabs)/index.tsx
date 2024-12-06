@@ -74,31 +74,33 @@ export default function OnboardingScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <FlatList
-        data={steps}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        renderItem={renderStep}
-        keyExtractor={(item) => item.id}
-        onMomentumScrollEnd={(event) => {
-          const index = Math.round(
-            event.nativeEvent.contentOffset.x / width
-          );
-          setCurrentStep(index);
-        }}
-        ref={flatListRef}
-      />
-      {renderDots()}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-          <Text style={styles.nextButtonText}>
-            {currentStep === steps.length - 1 ? 'GET STARTED' : 'NEXT'}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+    <View style={styles.container}>
+      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+        <FlatList
+          data={steps}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          renderItem={renderStep}
+          keyExtractor={(item) => item.id}
+          onMomentumScrollEnd={(event) => {
+            const index = Math.round(
+              event.nativeEvent.contentOffset.x / width
+            );
+            setCurrentStep(index);
+          }}
+          ref={flatListRef}
+        />
+        {renderDots()}
+        <SafeAreaView style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+            <Text style={styles.nextButtonText}>
+              {currentStep === steps.length - 1 ? 'GET STARTED' : 'NEXT'}
+            </Text>
+          </TouchableOpacity>
+        </SafeAreaView>
+      </SafeAreaView>
+    </View>
   );
 }
 
