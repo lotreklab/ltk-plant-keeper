@@ -112,24 +112,25 @@ const styles = StyleSheet.create({
   stepContainer: {
     width: width,
     alignItems: 'center',
-    padding: 20,
+    marginTop: '30%',
+    paddingHorizontal: 20,
   },
   image: {
     width: 200,
     height: 200,
     resizeMode: 'contain',
-    marginBottom: 20,
+    marginBottom: 60,
   },
   title: {
-    fontSize: 24,
+    fontSize: 23,
     fontWeight: 'bold',
     color: '#333',
     textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: 23,
   },
   description: {
     fontSize: 16,
-    color: '#666',
+    color: '#6A6F7D',
     textAlign: 'center',
   },
   dotsContainer: {
@@ -149,7 +150,7 @@ const styles = StyleSheet.create({
   },
   nextButton: {
     backgroundColor: '#2DDA93',
-    paddingVertical: 10,
+    paddingVertical: 16,
     paddingHorizontal: 20,
     borderRadius: 5,
     alignSelf: 'center',
