@@ -75,7 +75,7 @@ export default function OnboardingScreen() {
 
   return (
     <View style={styles.container}>
-      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+      <SafeAreaView style={styles.containerinner} edges={['top', 'left', 'right']}>
         <FlatList
           data={steps}
           horizontal
@@ -92,7 +92,7 @@ export default function OnboardingScreen() {
           ref={flatListRef}
         />
         {renderDots()}
-        <SafeAreaView style={styles.buttonContainer}>
+        <SafeAreaView>
           <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
             <Text style={styles.nextButtonText}>
               {currentStep === steps.length - 1 ? 'GET STARTED' : 'NEXT'}
@@ -109,10 +109,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  containerinner: {
+    flex: 1,
+    backgroundColor: '#fff',
+    marginTop: '10%',
+    marginBottom: '10%',
+  },
   stepContainer: {
     width: width,
     alignItems: 'center',
-    marginTop: '30%',
     paddingHorizontal: 20,
   },
   image: {
