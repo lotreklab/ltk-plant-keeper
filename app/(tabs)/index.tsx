@@ -22,21 +22,21 @@ type Step = {
 const steps: Step[] = [
   {
     id: '1',
-    image: require('@/assets/images/react-logo.png'),
-    title: 'Welcome to MyApp',
-    description: 'Discover how our app makes your life easier.',
+    image: require('@/assets/images/onboard-1.png'),
+    title: 'Identify Plants',
+    description: 'You can identify the plants you don\'t know through your camera',
   },
   {
     id: '2',
-    image: require('@/assets/images/react-logo.png'),
-    title: 'Track Your Progress',
-    description: 'Keep an eye on your achievements and goals.',
+    image: require('@/assets/images/onboard-2.png'),
+    title: 'Learn Many Plants Species',
+    description: 'Let\'s learn about the many plant species that exist in this world',
   },
   {
     id: '3',
-    image: require('@/assets/images/react-logo.png'),
-    title: 'Get Started Today',
-    description: 'Start exploring and enjoy the benefits!',
+    image: require('@/assets/images/onboard-3.png'),
+    title: 'Read Many Articles About Plant',
+    description: 'Let\'s learn more about beautiful plants and read many articles about plants and gardening',
   },
 ];
 
