@@ -46,6 +46,7 @@ export default function OnboardingScreen() {
   const handleNext = () => {
     if (flatListRef.current) {
       flatListRef.current.scrollToIndex({ index: currentStep + 1 });
+      setCurrentStep((prev) => prev + 1);
     } else {
       console.error('FlatList reference is not initialized');
     }
