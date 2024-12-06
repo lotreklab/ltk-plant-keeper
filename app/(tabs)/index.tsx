@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Dimensions,
+  SafeAreaView
 } from 'react-native';
 
 const { width } = Dimensions.get('window');
@@ -75,7 +76,7 @@ export default function OnboardingScreen() {
   );
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <FlatList
         data={steps}
         horizontal
@@ -97,7 +98,7 @@ export default function OnboardingScreen() {
           {currentStep === steps.length - 1 ? 'GET STARTED' : 'NEXT'}
         </Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 }
 
