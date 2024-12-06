@@ -11,22 +11,29 @@ import {
 
 const { width } = Dimensions.get('window');
 
-const steps = [
+type Step = {
+  id: string;
+  image: any; // Use `string` if using remote URIs instead of `require`
+  title: string;
+  description: string;
+};
+
+const steps: Step[] = [
   {
     id: '1',
-    //image: require('./assets/step1.png'), // Replace with your image in the `assets` folder
+    image: require('@/assets/images/react-logo.png'),
     title: 'Welcome to MyApp',
     description: 'Discover how our app makes your life easier.',
   },
   {
     id: '2',
-    //image: require('./assets/step2.png'), // Replace with your image
+    image: require('@/assets/images/react-logo.png'),
     title: 'Track Your Progress',
     description: 'Keep an eye on your achievements and goals.',
   },
   {
     id: '3',
-//    image: require('./assets/step3.png'), // Replace with your image
+    image: require('@/assets/images/react-logo.png'),
     title: 'Get Started Today',
     description: 'Start exploring and enjoy the benefits!',
   },
@@ -34,17 +41,17 @@ const steps = [
 
 export default function OnboardingScreen() {
   const [currentStep, setCurrentStep] = useState(0);
-  const flatListRef = useRef();
+  const flatListRef = useRef<FlatList<Step>>(null);
 
   const handleNext = () => {
-    if (currentStep < steps.length - 1) {
+    if (flatListRef.current) {
       flatListRef.current.scrollToIndex({ index: currentStep + 1 });
     } else {
-      console.log('Onboarding complete!'); // Replace with navigation logic
+      console.error('FlatList reference is not initialized');
     }
   };
 
-  const renderStep = ({ item }) => (
+  const renderStep = ({ item }: { item: Step }) => (
     <View style={styles.stepContainer}>
       <Image source={item.image} style={styles.image} />
       <Text style={styles.title}>{item.title}</Text>
