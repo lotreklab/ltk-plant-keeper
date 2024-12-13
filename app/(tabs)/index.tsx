@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import {
   View,
   Text,
@@ -43,6 +44,7 @@ const steps: Step[] = [
 export default function OnboardingScreen() {
   const [currentStep, setCurrentStep] = useState(0);
   const flatListRef = useRef<FlatList<Step>>(null);
+  const navigation = useNavigation();
 
   const handleNext = () => {
     if (flatListRef.current && currentStep < steps.length - 1) {
@@ -50,9 +52,8 @@ export default function OnboardingScreen() {
       setCurrentStep((prev) => prev + 1);
     }
     if (currentStep == steps.length - 1) {
-      // Navigate to 0 index
-      flatListRef.current?.scrollToIndex({ index: 0 });
-      setCurrentStep(0);
+      // Navigate to the next screen
+      navigation.navigate('homepage' as never);
     }
   };
 
