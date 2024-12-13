@@ -12,20 +12,20 @@ export default function Photo() {
   return (
     <View style={styles.container}>
         <SafeAreaView style={styles.containerSafe}>
-            <Text>Homepage</Text>
+            <Text>Photo</Text>
         </SafeAreaView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-      flex: 1,
-      backgroundColor: 'white',
-  },
-  containerSafe: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-  },
+    container: {
+        flex: 1,
+        backgroundColor: 'white',
+    },
+    containerSafe: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });
