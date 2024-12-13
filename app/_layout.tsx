@@ -6,7 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
 import { PersistGate } from 'redux-persist/integration/react';
-import { Provider, useSelector } from 'react-redux'
+import { Provider } from 'react-redux'
 
 import { store, persistedStore } from '@/store/store';
 import { useColorScheme } from '@/hooks/useColorScheme';
@@ -18,6 +18,10 @@ import Photo from './(tabs)/photo';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+import HeartIcon from '@/components/ui/heartIcon';
+import CameraIcon from '@/components/ui/cameraIcon';
+import HomeIcon from '@/components/ui/homeIcon';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -42,10 +46,30 @@ export default function RootLayout() {
 
   const Tabs = () => {
     return (
-      <Tab.Navigator>
-        <Tab.Screen name="Homepage" component={Homepage} options={{
-          headerShown: false
-        }}/>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused }) => {
+            if (route.name === 'Homepage') {
+              return <HomeIcon focused={focused} />;
+            } else if (route.name === 'Photo') {
+              return <CameraIcon focused={focused} />;
+            } else if (route.name === 'Favorite') {
+              return <HeartIcon focused={focused} />;
+            }
+          },
+          tabBarActiveTintColor: colorScheme === 'dark' ? '#fff' : '#000',
+          tabBarInactiveTintColor: colorScheme === 'dark' ? '#fff' : '#000',
+          tabBarStyle: {
+            backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+            borderTopWidth: 0,
+          },
+        })}
+      >
+        <Tab.Screen name="Homepage" component={Homepage} 
+          options={{
+            headerShown: false
+          }}
+        />
         <Tab.Screen name="Photo" component={Photo} />
         <Tab.Screen name="Favorite" component={Favorite} />
       </Tab.Navigator>
