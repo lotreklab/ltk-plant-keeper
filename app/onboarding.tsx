@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { useNavigation } from 'expo-router';
 import {
   View,
   Text,
@@ -9,9 +10,6 @@ import {
   Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'; // Ensure this is installed and imported
-import { useDispatch, useSelector } from 'react-redux';
-import { toggleOnBoarding } from '@/store/reducers/onboarding';
-import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
@@ -48,24 +46,12 @@ export default function OnBoardingScreen() {
   const flatListRef = useRef<FlatList<Step>>(null);
   const navigation = useNavigation();
 
-  const statusOnboarding = useSelector(state => state.onboarding.value);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    console.log("🚨", statusOnboarding);
-    if (statusOnboarding) {
-      navigation.navigate('homepage' as never);
-      return;
-    }
-  }, [statusOnboarding]);
-
   const handleNext = () => {
     if (flatListRef.current && currentStep < steps.length - 1) {
       flatListRef.current.scrollToIndex({ index: currentStep + 1 });
       setCurrentStep((prev) => prev + 1);
     }
     if (currentStep == steps.length - 1) {
-      dispatch(toggleOnBoarding());
       navigation.navigate('homepage' as never);
     }
   };
@@ -112,7 +98,7 @@ export default function OnBoardingScreen() {
         />
         {renderDots()}
         <SafeAreaView>
-          <TouchableOpacity style={styles.nextButton} onPress={() => handleNext()}>
+          <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
             <Text style={styles.nextButtonText}>
               {currentStep === steps.length - 1 ? 'GET STARTED' : 'NEXT'}
             </Text>

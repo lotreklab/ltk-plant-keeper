@@ -81,7 +81,7 @@ export default function RootLayout() {
       <StatusBar style="auto" />
       <Provider store={store}>
         <PersistGate persistor={persistedStore}>
-          <Stack.Navigator initialRouteName={store.getState().onboarding.value ? "homepage" : "onboarding"}>
+          <Stack.Navigator initialRouteName="onboarding">
           <Stack.Screen
             name="homepage"
             component={Tabs}
