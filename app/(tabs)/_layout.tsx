@@ -30,18 +30,17 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="photo"
         options={{
-          title: 'Explore',
+          title: 'photo',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="old-index"
+        name="explore"
         options={{
-          title: 'old-index',
+          title: 'Explore',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-          href: null,
         }}
       />
     </Tabs>
