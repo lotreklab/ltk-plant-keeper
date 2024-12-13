@@ -1,6 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
-// Define a type for the slice state
 export interface OnBoardingState {
   value: boolean
 }
@@ -15,19 +13,12 @@ export const boardedSlice = createSlice({
   initialState,
   reducers: {
     toggleOnBoarding: state => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
-      state.value = true
-    },
-    hasBoarded: (state, action: PayloadAction<boolean | undefined>) => {
-      state.value = action.payload ?? false;
+      state.value = !state.value
     }
   }
 })
 
 // Action creators are generated for each case reducer function
-export const { toggleOnBoarding, hasBoarded } = boardedSlice.actions
+export const { toggleOnBoarding } = boardedSlice.actions
 
 export default boardedSlice.reducer

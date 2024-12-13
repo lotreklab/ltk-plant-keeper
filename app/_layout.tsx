@@ -6,7 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
 import { PersistGate } from 'redux-persist/integration/react';
-import { Provider } from 'react-redux'
+import { Provider, useSelector } from 'react-redux'
 
 import { store, persistedStore } from '@/store/store';
 import { useColorScheme } from '@/hooks/useColorScheme';
@@ -57,7 +57,7 @@ export default function RootLayout() {
       <StatusBar style="auto" />
       <Provider store={store}>
         <PersistGate persistor={persistedStore}>
-          <Stack.Navigator initialRouteName="onboarding">
+          <Stack.Navigator initialRouteName={store.getState().onboarding.value ? "homepage" : "onboarding"}>
           <Stack.Screen
             name="homepage"
             component={Tabs}
