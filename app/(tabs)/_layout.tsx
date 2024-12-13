@@ -23,7 +23,9 @@ export default function TabLayout() {
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
-          default: {},
+          default: {
+            backgroundColor: 'white',
+          },
         }),
       }}>
       <Tabs.Screen
