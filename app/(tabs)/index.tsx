@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function Photo() {
   const navigation = useNavigation();
   // Set user has already boarded
-  const [isAlreadyBoarded, setIsAlreadyBoarded] = useState(true);
+  const isAlreadyBoarded = true;
   // Check if user has already boarded
   if (isAlreadyBoarded){
     navigation.navigate('onboarding' as never);
