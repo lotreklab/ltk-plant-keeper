@@ -3,6 +3,12 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
+import 'react-native-reanimated';
+
+import { PersistGate } from 'redux-persist/integration/react';
+import { Provider } from 'react-redux'
+
+import { store, persistedStore } from '@/store/store';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
 import Homepage from './(tabs)/homepage';
@@ -49,19 +55,23 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <StatusBar style="auto" />
-      <Stack.Navigator initialRouteName="onboarding">
-        <Stack.Screen
-          name="homepage"
-          component={Tabs}
-          options={{ 
-            headerShown: false,
-            gestureEnabled: false,
-          }}
-        />
-        <Stack.Screen name="onboarding" component={Onboarding} options={
-          { headerShown: false }
-        }/>
-      </Stack.Navigator>
+      <Provider store={store}>
+        <PersistGate persistor={persistedStore}>
+          <Stack.Navigator initialRouteName="onboarding">
+          <Stack.Screen
+            name="homepage"
+            component={Tabs}
+            options={{ 
+              headerShown: false,
+              gestureEnabled: false,
+            }}
+          />
+          <Stack.Screen name="onboarding" component={Onboarding} options={
+            { headerShown: false }
+          }/>
+        </Stack.Navigator>
+        </PersistGate>
+      </Provider>
     </ThemeProvider>
   );
 }
