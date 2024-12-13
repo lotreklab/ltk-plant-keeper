@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState , useEffect} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {
   View,
@@ -9,16 +9,18 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 //blank page with text in the middle
-export default function Photo() {
+export default function Index() {
   const navigation = useNavigation();
   // Set user has already boarded
-  const isAlreadyBoarded = true;
   // Check if user has already boarded
-  if (isAlreadyBoarded){
-    navigation.navigate('onboarding' as never);
-  } else {
-    navigation.navigate('homepage' as never);
-  }
+  useEffect(() => {
+    const isAlreadyBoarded = true;
+    if (isAlreadyBoarded){
+      navigation.navigate('onboarding' as never);
+    } else {
+      navigation.navigate('homepage' as never);
+    }
+  },[navigation]);
   return (
     <View style={styles.container}>
         <SafeAreaView style={styles.containerSafe}>
