@@ -41,7 +41,7 @@ const steps: Step[] = [
   },
 ];
 
-export default function OnboardingScreen() {
+export default function OnBoardingScreen() {
   const [currentStep, setCurrentStep] = useState(0);
   const flatListRef = useRef<FlatList<Step>>(null);
   const navigation = useNavigation();
@@ -52,7 +52,6 @@ export default function OnboardingScreen() {
       setCurrentStep((prev) => prev + 1);
     }
     if (currentStep == steps.length - 1) {
-      // Navigate to the next screen
       navigation.navigate('homepage' as never);
     }
   };

@@ -8,7 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 //blank page with text in the middle
-export default function Favorites() {
+export default function FavoriteScreen() {
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.containerSafe}>

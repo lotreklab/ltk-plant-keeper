@@ -1,11 +1,20 @@
+import { useEffect } from 'react';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-
 import { useColorScheme } from '@/hooks/useColorScheme';
+
+import Homepage from './(tabs)/homepage';
+import Onboarding from './onboarding';
+import Favorite from './(tabs)/favorite';
+import Photo from './(tabs)/photo';
+
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 SplashScreen.preventAutoHideAsync();
 
@@ -25,17 +34,34 @@ export default function RootLayout() {
     return null;
   }
 
+  const Tabs = () => {
+    return (
+      <Tab.Navigator>
+        <Tab.Screen name="Homepage" component={Homepage} options={{
+          headerShown: false
+        }}/>
+        <Tab.Screen name="Photo" component={Photo} />
+        <Tab.Screen name="Favorite" component={Favorite} />
+      </Tab.Navigator>
+    );
+  }
+
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <StatusBar style="auto" />
-      <Stack>
-        <Stack.Screen name="(tabs)" options={
+      <Stack.Navigator initialRouteName="onboarding">
+        <Stack.Screen
+          name="homepage"
+          component={Tabs}
+          options={{ 
+            headerShown: false,
+            gestureEnabled: false,
+          }}
+        />
+        <Stack.Screen name="onboarding" component={Onboarding} options={
           { headerShown: false }
         }/>
-        <Stack.Screen name="(screens)" options={
-          { headerShown: false }
-        }/>
-      </Stack>
+      </Stack.Navigator>
     </ThemeProvider>
   );
 }
