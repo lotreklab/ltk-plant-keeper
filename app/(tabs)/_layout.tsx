@@ -8,6 +8,10 @@ import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
+import HeartIcon from '@/components/ui/heartIcon';
+import CameraIcon from '@/components/ui/cameraIcon';
+import HomeIcon from '@/components/ui/homeIcon';
+
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
@@ -34,21 +38,21 @@ export default function TabLayout() {
         name="homepage"
         options={{
           title: 'HOME',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarIcon: () => <HomeIcon />,
         }}
       />
       <Tabs.Screen
         name="photo"
         options={{
           title: '',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="camera.fill" color={color} />,
+          tabBarIcon: () => <CameraIcon />,
         }}
       />
       <Tabs.Screen
         name="preferiti"
         options={{
           title: 'PREFERITI',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="heart.fill" color={color} />,
+          tabBarIcon: () => <HeartIcon />,
         }}
       />
       <Tabs.Screen
