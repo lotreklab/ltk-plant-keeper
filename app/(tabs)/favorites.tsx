@@ -8,24 +8,24 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 //blank page with text in the middle
-export default function Photo() {
+export default function Favorites() {
   return (
     <View style={styles.container}>
-        <SafeAreaView style={styles.containerSafe}>
-            <Text>Homepage</Text>
-        </SafeAreaView>
+      <SafeAreaView style={styles.containerSafe}>
+        <Text>Favorites</Text>
+      </SafeAreaView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-      flex: 1,
-      backgroundColor: 'white',
+    flex: 1,
+    backgroundColor: 'white',
   },
   containerSafe: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

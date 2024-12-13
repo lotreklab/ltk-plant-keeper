@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState , useEffect} from 'react';
+import { useNavigation } from '@react-navigation/native';
 import {
   View,
   Text,
@@ -8,11 +9,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 //blank page with text in the middle
-export default function Photo() {
+export default function Index() {
+  // Set user has already boarded
+  // Check if user has already boarded
+
   return (
     <View style={styles.container}>
         <SafeAreaView style={styles.containerSafe}>
-            <Text>Photo</Text>
+            <Text>Homepage 2</Text>
         </SafeAreaView>
     </View>
   );
