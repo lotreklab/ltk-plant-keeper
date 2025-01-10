@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -13,8 +13,10 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import {daysentence} from  '@/store/reducers/motivational';
 const { width } = Dimensions.get('window');
+import { useDispatch, useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native'; 
 
 export default function PlantLearningPage() {
   const renderCard = ({ item }: { item: { image: string; title: string; subtitle: string } }) => (
@@ -44,6 +46,12 @@ export default function PlantLearningPage() {
     { image: require('@/assets/images/home-mini-2.png'), title: '#Homely' },
     { image: require('@/assets/images/home-mini-3.png'), title: '#Cute' },
   ];
+  const greenDay = useSelector(state => state.wordgarden.value)
+  const dispatch = useDispatch();
+  useEffect(() => {
+  
+    dispatch(daysentence());
+  }, [dispatch]); 
 
   return (
     <View style={styles.container}>
@@ -52,7 +60,7 @@ export default function PlantLearningPage() {
 
       <View style={styles.header}>
         <Text style={styles.title}>Hello Taylor</Text>
-        <Text style={styles.subtitle}>Let's learn more about plants</Text>
+        <Text style={styles.subtitle}>{greenDay}</Text>
       </View>
 
       {/* Search Bar */}
