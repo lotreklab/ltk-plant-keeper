@@ -7,13 +7,16 @@ interface AxiosClientConfig extends AxiosRequestConfig {
   baseURL: string;
   timeout: number;
 }
-
+const API_KEY = process.env.EXPO_PUBLIC_API_KEY;
 const axiosClient: AxiosInstance = axios.create({
   baseURL: 'https://trefle.io/api/v1/',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
+  params: {
+    token: API_KEY
+  }
 });
 
 axiosClient.interceptors.request.use(

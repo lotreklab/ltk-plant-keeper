@@ -3,10 +3,10 @@ import { View, Text, ActivityIndicator, StyleSheet, ScrollView } from 'react-nat
 import useFetchData from '@/hooks/useFetchData';
 import Plant from '@/types/plant';
 
-const API_KEY = process.env.EXPO_PUBLIC_API_KEY;
+
 
 const PlantList = () => {
-    const { data, loading, error } = useFetchData<Plant[]>(`plants?page=3&token=${API_KEY}`);
+    const { data, loading, error } = useFetchData<Plant[]>(`species?page=3`);
     
     if (loading) {
         return (
