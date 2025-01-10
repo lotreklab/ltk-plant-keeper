@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     paddingLeft: 24,
     paddingRight: 24,
     color: '#D2D2D2',
+    filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
   },
   textInputActive: {
     position: 'relative',
@@ -73,6 +74,7 @@ const styles = StyleSheet.create({
     paddingLeft: 24,
     paddingRight: 24,
     color: '#000000', // Change text color when typing
+    filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
   }
 });
 
