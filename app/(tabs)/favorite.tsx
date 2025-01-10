@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { SectionListBasics } from '@/components/SectionListBasics';
 import {
   View,
   Text,
@@ -13,6 +14,7 @@ export default function FavoriteScreen() {
     <View style={styles.container}>
       <SafeAreaView style={styles.containerSafe}>
         <Text>Favorites</Text>
+        <SectionListBasics />
       </SafeAreaView>
     </View>
   );
