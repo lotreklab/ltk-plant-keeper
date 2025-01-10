@@ -188,6 +188,7 @@ export function SectionListBasics() {
       <SectionList
       sections={filteredDataSource}
       renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
+      stickySectionHeadersEnabled={true}
       renderSectionHeader={({section}) => (
         <Text style={styles.sectionHeader}>{section.title}</Text>
       )}
