@@ -15,6 +15,7 @@ import Homepage from './(tabs)/homepage';
 import Onboarding from './onboarding';
 import Favorite from './(tabs)/favorite';
 import Photo from './(tabs)/photo';
+import PlantList from './(tabs)/plant-list';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -56,6 +57,9 @@ export default function RootLayout() {
             } else if (route.name === 'Favorite') {
               return <HeartIcon focused={focused} />;
             }
+            else if (route.name === 'PlantList') {
+              return <HeartIcon focused={focused} />;
+            }
           },
           tabBarActiveTintColor: colorScheme === 'dark' ? '#fff' : '#000',
           tabBarInactiveTintColor: colorScheme === 'dark' ? '#fff' : '#000',
@@ -72,6 +76,7 @@ export default function RootLayout() {
         />
         <Tab.Screen name="Photo" component={Photo} />
         <Tab.Screen name="Favorite" component={Favorite} />
+        <Tab.Screen name="PlantList" component={PlantList} />
       </Tab.Navigator>
     );
   }
