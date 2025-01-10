@@ -19,7 +19,7 @@ const { width } = Dimensions.get('window');
 export default function PlantLearningPage() {
   const renderCard = ({ item }: { item: { image: string; title: string; subtitle: string } }) => (
     <TouchableOpacity style={[styles.card, { width: 300, height: 160 }]}>
-      <ImageBackground source={{ uri: item.image }} style={styles.cardBackground}>
+      <ImageBackground source={item.image} style={styles.cardBackground}>
         <Text style={styles.cardTitle}>{item.title}</Text>
         <Text style={styles.cardSubtitle}>{item.subtitle}</Text>
       </ImageBackground>
@@ -28,20 +28,21 @@ export default function PlantLearningPage() {
 
   const renderSmallCard = ({ item }: { item: { image: string; title: string } }) => (
     <TouchableOpacity style={[styles.card, { width: 125, height: 145 }]}>
-      <ImageBackground source={{ uri: item.image }} style={styles.cardBackground}>
-        <Text style={styles.cardTitle}>{item.title}</Text>
+      <ImageBackground source={item.image} style={styles.cardBackground}>
+        <Text style={styles.cardTitleMini}>{item.title}</Text>
       </ImageBackground>
     </TouchableOpacity>
   );
 
   const cardsData = [
-    { image: 'https://via.placeholder.com/300x160', title: 'Card Title', subtitle: 'Card Subtitle' },
-    { image: 'https://via.placeholder.com/300x160', title: 'Another Card', subtitle: 'Another Subtitle' },
+    { image: require('@/assets/images/home-big-1.png'), title: 'Card Title', subtitle: 'Card Subtitle' },
+    { image: require('@/assets/images/home-big-2.png'), title: 'Another Card', subtitle: 'Another Subtitle' },
   ];
 
   const smallCardsData = [
-    { image: 'https://via.placeholder.com/125x145', title: 'Small Card' },
-    { image: 'https://via.placeholder.com/125x145', title: 'Another Small Card' },
+    { image: require('@/assets/images/home-mini-1.png'), title: '#Mini' },
+    { image: require('@/assets/images/home-mini-2.png'), title: '#Homely' },
+    { image: require('@/assets/images/home-mini-3.png'), title: '#Cute' },
   ];
 
   return (
@@ -115,20 +116,21 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    height: 265,
+    height: 255,
+    resizeMode: "cover",
   },
   header: {
     marginBottom: 20,
     marginTop: 120,
   },
   title: {
-    fontSize: 24,
+    fontSize: 21,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#FFFFFF',
   },
   subtitle: {
-    fontSize: 16,
-    color: '#666',
+    fontSize: 14,
+    color: '#FFFFFF',
   },
   sliderTitle: {
     fontSize: 18,
@@ -149,7 +151,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#6A6F7D',
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: '400',
     marginTop: 6,
     textTransform: "uppercase",
@@ -169,6 +171,11 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  cardTitleMini: {
+    color: '#2E382FCC',
     fontSize: 18,
     fontWeight: 'bold',
   },
