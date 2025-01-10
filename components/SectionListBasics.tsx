@@ -35,16 +35,18 @@ const styles = StyleSheet.create({
 
 export function SectionListBasics() {
   const [search, setSearch] = useState('');
+  // Item type for the SectionList
   interface Item {
-    title: string;
-    data: string[];
+    title: string; // Section title (e.g. 'D', 'J', 'K', 'M')
+    data: string[]; // Data for the section (e.g. ['Devin', 'Dan', 'Dominic'])
   }
-
+  // Data for the SectionList: https://reactnative.dev/docs/sectionlist
   const [filteredDataSource, setFilteredDataSource] = useState<Item[]>([]);
   const [masterDataSource, setMasterDataSource] = useState<Item[]>([]);
 
   useEffect(() => {
-    const staticResponseSections: Item[] = [
+    // For the purpose of this example, we will start with static data
+    const staticResponseDataSections: Item[] = [
         {title: 'D', data: ['Devin', 'Dan', 'Dominic']},
         {
           title: 'J',
@@ -83,8 +85,9 @@ export function SectionListBasics() {
           ],
         },
     ];
-    setFilteredDataSource(staticResponseSections);
-    setMasterDataSource(staticResponseSections);
+    // Fetch data from an API here
+    // TODO: Add API fetch here
+
     /* fetch('')
       .then((response) => response.json())
       .then((responseJson) => {
@@ -94,6 +97,8 @@ export function SectionListBasics() {
       .catch((error) => {
         console.error(error);
       }); */
+      setFilteredDataSource(staticResponseDataSections);
+      setMasterDataSource(staticResponseDataSections);
   }, []);
 
   const searchFilterFunction = (text: string) => {
@@ -112,15 +117,15 @@ export function SectionListBasics() {
         }
         return null;
       }).filter(item => item !== null) as Item[];
-        /* return itemData.indexOf(textData) > -1; */
-      /* }); */
-      console.log('newData',newData);
+      // Update FilteredDataSource with the newData
       setFilteredDataSource(newData);
+      // Update Search Query
       setSearch(text);
     } else {
       // Inserted text is blank
       // Update FilteredDataSource with masterDataSource
       setFilteredDataSource(masterDataSource);
+      // Update Search Query
       setSearch(text);
     }
   };
@@ -134,45 +139,6 @@ export function SectionListBasics() {
           placeholder="Search Here"
         />
       <SectionList
-        /* sections={[
-          {title: 'D', data: ['Devin', 'Dan', 'Dominic']},
-          {
-            title: 'J',
-            data: [
-              'Jackson',
-              'James',
-              'Jillian',
-              'Jimmy',
-              'Joel',
-              'John',
-              'Julie',
-            ],
-          },
-          {
-            title: 'K',
-            data: [
-              'Kackson',
-              'Kames',
-              'Killian',
-              'Kimmy',
-              'Koel',
-              'Kohn',
-              'Kulie',
-            ],
-          },
-          {
-            title: 'M',
-            data: [
-              'Mackson',
-              'Mames',
-              'Millian',
-              'Mimmy',
-              'Moel',
-              'Mohn',
-              'Mulie',
-            ],
-          },
-        ]} */
         sections={filteredDataSource}
         renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
         renderSectionHeader={({section}) => (
