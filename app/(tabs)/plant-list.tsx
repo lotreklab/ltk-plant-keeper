@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet, ScrollView } from 'react-native';
 import useFetchData from '@/hooks/useFetchData';
 import Plant from '@/types/plant';
 
+const API_KEY = process.env.EXPO_PUBLIC_API_KEY;
 
 const PlantList = () => {
-    const { data, loading, error } = useFetchData<Plant[]>('/plant/search?alias=acer&limit=10&offset=20');
+    const { data, loading, error } = useFetchData<Plant[]>(`plants?page=3&token=${API_KEY}`);
     
     if (loading) {
         return (
@@ -23,20 +24,23 @@ const PlantList = () => {
         );
     }
     
-    const results = data?.results || [];
-    const next = data?.next;
-    const previous = data?.previous;
-    const count = data?.count;
+    const results = data?.data || [];
+    const next = data?.links.next;
+    const count = data?.meta.total || [];
+
+    console.log(next)
     return (
         <View style={styles.container}>
-        <Text>Plant count: {count}</Text>
+        <Text>Plant count:{count} </Text>
         {results.map(plant => (
-            <Text key={plant.pid}>{plant.display_pid}</Text>
+            <Text key={plant.id}>{plant.common_name}</Text>
         ))}
+      
         </View>
     );
     }
-
+ 
+    
 const styles = StyleSheet.create({
     container: {
         flex: 1,

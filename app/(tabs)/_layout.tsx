@@ -58,6 +58,16 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="plantList"
+        options={{
+          title: 'PlantList',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          tabBarStyle: { display: 'none' },
+          href: null,
+        }}
+      />
+      
+      <Tabs.Screen
         name="onboarding"
         options={{
           title: 'Onboarding',
