@@ -16,56 +16,6 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
 
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          default: {
-            backgroundColor: 'white',
-          },
-        }),
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'index',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-          href: null,
-        }}
-      />
-      <Tabs.Screen
-        name="homepage"
-        options={{
-          title: 'HOME',
-          tabBarIcon: () => <HomeIcon />,
-        }}
-      />
-      <Tabs.Screen
-        name="photo"
-        options={{
-          title: '',
-          tabBarIcon: () => <CameraIcon />,
-        }}
-      />
-      <Tabs.Screen
-        name="preferiti"
-        options={{
-          title: 'PREFERITI',
-          tabBarIcon: () => <HeartIcon />,
-        }}
-      />
-      <Tabs.Screen
-        name="onboarding"
-        options={{
-          title: 'Onboarding',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-          tabBarStyle: { display: 'none' },
-          href: null,
-        }}
-      />
-    </Tabs>
+    <></>
   );
 }
