@@ -6,14 +6,18 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useDispatch, useSelector } from 'react-redux';
 import { decrement, increment } from '@/store/reducers/counter'
+import { toggleOnBoarding } from '@/store/reducers/onboarding'
+import {daysentence} from  '@/store/reducers/motivational'
 import { useEffect } from 'react';
 
 export default function HomeScreen() {
   const count = useSelector(state => state.counter.value)
+  const hasBoarded = useSelector(state => state.onboarding.value)
+  const greenDay = useSelector(state => state.wordgarden.value)
   const dispatch = useDispatch()
   useEffect(() => {
-    console.log('count:', count)
-  }, [count])
+    console.log(greenDay)
+  }, [count, hasBoarded])
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -33,7 +37,12 @@ export default function HomeScreen() {
           title='Increment'
           onPress={() => dispatch(increment())}
         />
+        <Button
+          title='Ho visto'
+          onPress={() => dispatch(toggleOnBoarding())}
+        />
         <ThemedText>{count}</ThemedText>
+        <ThemedText>ciao: {hasBoarded.toString()}</ThemedText>
         <ThemedText>
           Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
           Press{' '}

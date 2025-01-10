@@ -8,6 +8,10 @@ import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
+import HeartIcon from '@/components/ui/heartIcon';
+import CameraIcon from '@/components/ui/cameraIcon';
+import HomeIcon from '@/components/ui/homeIcon';
+
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
@@ -19,25 +23,47 @@ export default function TabLayout() {
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
+          default: {
+            backgroundColor: 'white',
           },
-          default: {},
         }),
       }}>
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: 'index',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          href: null,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="homepage"
         options={{
-          title: 'Explore',
+          title: 'HOME',
+          tabBarIcon: () => <HomeIcon />,
+        }}
+      />
+      <Tabs.Screen
+        name="photo"
+        options={{
+          title: '',
+          tabBarIcon: () => <CameraIcon />,
+        }}
+      />
+      <Tabs.Screen
+        name="preferiti"
+        options={{
+          title: 'PREFERITI',
+          tabBarIcon: () => <HeartIcon />,
+        }}
+      />
+      <Tabs.Screen
+        name="onboarding"
+        options={{
+          title: 'Onboarding',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          tabBarStyle: { display: 'none' },
+          href: null,
         }}
       />
     </Tabs>

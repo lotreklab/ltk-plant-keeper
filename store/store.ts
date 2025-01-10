@@ -6,18 +6,25 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const persistConfig = {
   key: 'root',
-  storage: AsyncStorage
+  storage: AsyncStorage,
+  blacklist: ['wordgarden']
 }
 
 const persistedReducer = persistReducer(persistConfig, reducers)
 
 export const store = configureStore({
-  reducer: persistedReducer
+  reducer: persistedReducer,
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
+    
 })
 
 export const persistedStore = persistStore(store)
 
 export default {
   store,
-  persistedStore
+  persistedStore,
+  
 }
