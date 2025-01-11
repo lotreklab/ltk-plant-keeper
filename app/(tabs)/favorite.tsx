@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { SectionListBasics } from '@/components/SectionListBasics';
 import {
   View,
@@ -6,7 +6,6 @@ import {
   StyleSheet,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
 
 //blank page with text in the middle
 export default function FavoriteScreen() {
