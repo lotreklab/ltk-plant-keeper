@@ -16,6 +16,8 @@ import Homepage from './(tabs)/homepage';
 import Onboarding from './onboarding';
 import Favorite from './(tabs)/favorite';
 import Photo from './(tabs)/photo';
+import Category from './category';
+import Detail from './detail';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -138,6 +140,8 @@ export default function RootLayout() {
           headerShown: false,
         }} />
         <Tab.Screen name="Favorite" component={Favorite} />
+        <Tab.Screen name="Category" component={Category} />
+        <Tab.Screen name="Detail" component={Detail} />
       </Tab.Navigator>
     );
   }

@@ -8,7 +8,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // Replace if not using Expo
+import { Ionicons } from '@expo/vector-icons';
 
 type CardData = {
   id: string;
@@ -17,6 +17,8 @@ type CardData = {
   subtitle: string;
   tags: string;
   description: string;
+  kingdom: string;
+  family: string;
 };
 
 const categoryData: CardData[] = [
@@ -27,6 +29,9 @@ const categoryData: CardData[] = [
     subtitle: 'Subtitle 1',
     tags: 'Tag1, Tag2',
     description: 'A brief description of Plant 1.',
+    kingdom: 'Plantae',
+    family: 'Cactaceae',
+
   },
   {
     id: '2',
@@ -35,6 +40,8 @@ const categoryData: CardData[] = [
     subtitle: 'Subtitle 2',
     tags: 'Tag3, Tag4',
     description: 'A brief description of Plant 2.',
+    kingdom: 'Plantae-2',
+    family: 'Cactaceae-2',
   },
   {
     id: '3',
@@ -43,6 +50,8 @@ const categoryData: CardData[] = [
     subtitle: 'Subtitle3',
     tags: 'Tag3, Tag4',
     description: 'A brief description of Plant3.',
+    kingdom: 'Plantae-3',
+    family: 'Cactaceae-3',
   },
   {
     id: '4',
@@ -51,6 +60,8 @@ const categoryData: CardData[] = [
     subtitle: 'Subtitle4',
     tags: 'Tag3, Tag4',
     description: 'A brief description of Plant4.',
+    kingdom: 'Plantae-4',
+    family: 'Cactaceae-4',
   },
   // Add more cards as needed
 ];
@@ -61,9 +72,24 @@ export default function Category({ navigation }: { navigation: any }) {
       <Image source={item.image} style={styles.cardImage} />
       <View style={styles.cardTextContainer}>
         <Text style={styles.cardTitle}>{item.title}</Text>
-        <Text style={styles.cardSubtitle}>{item.subtitle}</Text>
-        <Text style={styles.cardTags}>{item.tags}</Text>
-        <Text style={styles.cardDescription}>{item.description}</Text>
+
+        <View style={styles.cardTextBoxWrapper}>
+          <View style={styles.cardTextBox}>
+            <Text style={styles.cardTags}>Kingdom</Text>
+            <Text style={styles.cardSubtitle}>{item.kingdom}</Text>
+          </View>
+
+          <View style={styles.cardTextBox}>
+            <Text style={styles.cardTags}>Family</Text>
+            <Text style={styles.cardSubtitle}>{item.family}</Text>
+          </View>
+        </View>
+
+        <View style={styles.cardTextBox}>
+          <Text style={styles.cardTags}>Description</Text>
+          <Text style={styles.cardDescription}>{item.description}</Text>
+        </View>
+        
       </View>
     </View>
   );
@@ -153,6 +179,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#e9e9e9',
   },
+  cardTextBoxWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+  },
+  cardTextBox: {
+    flexDirection: 'column',
+    marginBottom: 10,
+    marginRight: 20,
+  },
   cardImage: {
     width: 125,
     height: 125,
@@ -173,14 +208,15 @@ const styles = StyleSheet.create({
   },
   cardSubtitle: {
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: '400',
     color: '#36455A',
     marginBottom: 2,
   },
   cardTags: {
     fontSize: 12,
     color: '#A1A8B9',
-    marginBottom: 8,
+    marginBottom: 2,
+    textTransform: 'uppercase',
   },
   cardDescription: {
     fontSize: 12,
