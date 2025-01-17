@@ -58,7 +58,7 @@ export default function PlantLearningPage() {
       {/* Header */}
       <Image source={require('@/assets/images/home-header.png')} style={styles.imageHeader} />
 
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingLeft: 24 }]}>
         <Text style={styles.title}>Hello Taylor</Text>
         <Text style={styles.subtitle}>{greenDay}</Text>
       </View>
@@ -75,8 +75,7 @@ export default function PlantLearningPage() {
         </View>
       </View>
 
-      <ScrollView style={styles.containerSafe}>
-
+      <ScrollView style={[styles.containerSafe, { paddingLeft: 16 }]} showsVerticalScrollIndicator={false}>
         <TouchableOpacity style={styles.button}>
           <Ionicons name="leaf" size={20} color="#2DDA93" style={styles.searchIcon} />
           <Text style={styles.buttonText}>Species</Text>
@@ -104,6 +103,8 @@ export default function PlantLearningPage() {
           style={styles.carousel}
         />
 
+        <View style={{ height: 32 }} />
+
       </ScrollView>
     </View>
   );
@@ -113,19 +114,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FBFDFF',
-    padding: 20,
   },
   containerSafe: {
-      // justifyContent: 'center',
-      // alignItems: 'stretch',
+    // justifyContent: 'center',
+    // alignItems: 'stretch',
   },
   imageHeader: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
+    width: '100%',
     height: 255,
-    resizeMode: "cover",
+    resizeMode: "cover"
   },
   header: {
     marginBottom: 20,
