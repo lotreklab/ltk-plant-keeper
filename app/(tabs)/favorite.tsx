@@ -12,7 +12,7 @@ export default function FavoriteScreen() {
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.containerSafe}>
-        <Text>Favorites</Text>
+        <Text>Preferiti</Text>
         <SectionListBasics />
       </SafeAreaView>
     </View>

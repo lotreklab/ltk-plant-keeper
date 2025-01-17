@@ -16,7 +16,7 @@ import Homepage from './(tabs)/homepage';
 import Onboarding from './onboarding';
 import Favorite from './(tabs)/favorite';
 import Photo from './(tabs)/photo';
-import PlantList from './(tabs)/plant-list';
+import SpeciesScreen from "./species";
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -139,7 +139,7 @@ export default function RootLayout() {
           headerShown: false,
         }} />
         <Tab.Screen name="Favorite" component={Favorite} />
-        <Tab.Screen name="PlantList" component={PlantList} />
+
       </Tab.Navigator>
     );
   }
@@ -159,6 +159,9 @@ export default function RootLayout() {
             }}
           />
           <Stack.Screen name="onboarding" component={Onboarding} options={
+            { headerShown: false }
+          }/>
+          <Stack.Screen name="species" component={SpeciesScreen} options={
             { headerShown: false }
           }/>
         </Stack.Navigator>

@@ -16,9 +16,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {daysentence} from  '@/store/reducers/motivational';
 const { width } = Dimensions.get('window');
 import { useDispatch, useSelector } from 'react-redux';
-import { useFocusEffect } from '@react-navigation/native'; 
+import { useFocusEffect, useNavigation} from '@react-navigation/native'; 
+
 
 export default function PlantLearningPage() {
+  const navigation=useNavigation();
   const renderCard = ({ item }: { item: { image: string; title: string; subtitle: string } }) => (
     <TouchableOpacity style={[styles.card, { width: 300, height: 160 }]}>
       <ImageBackground source={item.image} style={styles.cardBackground}>
@@ -76,7 +78,7 @@ export default function PlantLearningPage() {
       </View>
 
       <ScrollView style={[styles.containerSafe, { paddingLeft: 16 }]} showsVerticalScrollIndicator={false}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={()=>{navigation.navigate("species")}}>
           <Ionicons name="leaf" size={20} color="#2DDA93" style={styles.searchIcon} />
           <Text style={styles.buttonText}>Species</Text>
         </TouchableOpacity>
