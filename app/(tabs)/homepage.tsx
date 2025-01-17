@@ -13,10 +13,14 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {daysentence} from  '@/store/reducers/motivational';
+
+import { daysentence } from "@/store/reducers/motivational";
+
+import HeaderWithSearch from '../../components/ui/headerWithSearch';
+
 const { width } = Dimensions.get('window');
 import { useDispatch, useSelector } from 'react-redux';
-import { useFocusEffect, useNavigation} from '@react-navigation/native'; 
+import { useFocusEffect, useNavigation} from '@react-navigation/native';
 
 
 export default function PlantLearningPage() {
@@ -51,33 +55,26 @@ export default function PlantLearningPage() {
   const greenDay = useSelector(state => state.wordgarden.value)
   const dispatch = useDispatch();
   useEffect(() => {
-  
+
     dispatch(daysentence());
-  }, [dispatch]); 
+  }, [dispatch]);
+
+  const handleSearch = (text) => {
+    console.log('Search text:', text);
+  };
 
   return (
     <View style={styles.container}>
       {/* Header */}
-      <Image source={require('@/assets/images/home-header.png')} style={styles.imageHeader} />
+      <HeaderWithSearch
+        title="Hello Taylor"
+        subtitle={greenDay}
+        onSearch={handleSearch}
+        showBackButton = {false}
+        fadedText = "Home"
+      />
 
-      <View style={[styles.header, { paddingLeft: 24 }]}>
-        <Text style={styles.title}>Hello Taylor</Text>
-        <Text style={styles.subtitle}>{greenDay}</Text>
-      </View>
-
-      {/* Search Bar */}
-      <View style={styles.searchBarContainer}>
-        <View style={styles.searchBar}>
-          <Ionicons name="search" size={20} color="#D2D2D2" style={styles.searchIcon} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search plants..."
-            placeholderTextColor="#D2D2D2"
-          />
-        </View>
-      </View>
-
-      <ScrollView style={[styles.containerSafe, { paddingLeft: 16 }]} showsVerticalScrollIndicator={false}>
+      <ScrollView style={[styles.containerSafe, { paddingLeft: 16, paddingTop: 48 }]} showsVerticalScrollIndicator={false}>
         <TouchableOpacity style={styles.button} onPress={()=>{navigation.navigate("species")}}>
           <Ionicons name="leaf" size={20} color="#2DDA93" style={styles.searchIcon} />
           <Text style={styles.buttonText}>Species</Text>
@@ -121,37 +118,6 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     // alignItems: 'stretch',
   },
-  imageHeader: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    width: '100%',
-    height: 255,
-    resizeMode: "cover"
-  },
-  header: {
-    marginBottom: 20,
-    marginTop: 120,
-  },
-  title: {
-    fontSize: 21,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#FFFFFF',
-  },
-  sliderTitle: {
-    fontSize: 18,
-    color: '#36455A',
-    fontWeight: "700",
-    marginBottom: 14,
-  },
-  searchContainer: {
-    marginBottom: 20,
-  },
   button: {
     backgroundColor: '#fff',
     padding: 12,
@@ -194,26 +160,5 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 14,
   },
-  searchBarContainer: {
-    marginTop: 0,
-    paddingHorizontal: 20,
-    marginBottom: 40,
-  },
-  searchBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 50,
-    paddingHorizontal: 10,
-    elevation: 1,
-    height: 40,
-  },
-  searchIcon: {
-    marginRight: 10,
-  },
-  searchInput: {
-    flex: 1,
-    fontSize: 16,
-    color: '#333',
-  },
+
 });

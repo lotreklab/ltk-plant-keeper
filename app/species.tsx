@@ -1,14 +1,13 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import { SectionListBasics } from '@/components/SectionListBasics';
 import {
   View,
   Text,
   StyleSheet,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import {FetchSpecies, PlantSpecies} from '@/store/reducers/species';
-
+import HeaderWithSearch from '@/components/ui/headerWithSearch';
 
 //blank page with text in the middle
 export default function SpeciesScreen() {
@@ -18,20 +17,33 @@ export default function SpeciesScreen() {
     dispatch(FetchSpecies())
   },[])
 
+  const orderItems = useMemo(() => {
+    const groupedVariety = variety.reduce((acc: { [x: string]: any[]; }, item: { common_name: string[]; }) => {
+      const firstLetter = item.common_name[0].toUpperCase();
+      if (!acc[firstLetter]) {
+        acc[firstLetter] = [];
+      }
+      acc[firstLetter].push(item.common_name);
+      return acc;
+    }, {});
+
+    return Object.keys(groupedVariety).sort().map(letter => ({
+      title: letter,
+      data: groupedVariety[letter],
+    }));
+  }, [variety]);
+
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>Error: {error}</Text>;
 
   return (
     <View style={styles.container}>
-      <SafeAreaView style={styles.containerSafe}>
-        <Text>Species</Text>
-        {variety.map((item, key)=>(
-          <Text>{item.common_name}</Text>
-        )
-          
-        )}
-        <SectionListBasics />
-      </SafeAreaView>
+      <HeaderWithSearch
+        title="Specie"
+        onSearch={() => {}}
+        fadedText = "Specie"
+      />
+      <SectionListBasics data={orderItems} />
     </View>
   );
 }

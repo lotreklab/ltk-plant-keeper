@@ -11,10 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function FavoriteScreen() {
   return (
     <View style={styles.container}>
-      <SafeAreaView style={styles.containerSafe}>
-        <Text>Preferiti</Text>
-        <SectionListBasics />
-      </SafeAreaView>
+      <SectionListBasics />
     </View>
   );
 }
@@ -23,10 +20,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-  },
-  containerSafe: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });

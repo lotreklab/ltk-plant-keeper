@@ -1,12 +1,8 @@
-import { CameraView, CameraType, FlashMode, useCameraPermissions, launchImageLibraryAsync } from 'expo-camera';
-import { useState, useRef } from 'react';
-import { Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { Button, Image, Modal, StyleSheet, Text, TouchableOpacity, View, FlatList } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-//TODO: 
-// far funzionare il flash, 
-// aggiungere pulsante per inviare foto scattata e redirect alla pagina di informazioni,
-// far funzionare l'accesso alla galleria e la scelta della foto da inviare
+import { CameraView, CameraType, FlashMode, useCameraPermissions } from 'expo-camera';
+import * as ImagePicker from 'expo-image-picker';
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
@@ -23,7 +19,7 @@ export default function App() {
     return (
       <View style={styles.container}>
         <Text style={styles.message}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="grant permission" />
+        <Button onPress={requestPermission} title="Grant Permission" />
       </View>
     );
   }
@@ -50,13 +46,14 @@ export default function App() {
   }
 
   async function openGallery() {
-    const result = await launchImageLibraryAsync({
-      mediaTypes: 'Images',
-      allowsEditing: true,
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: false,
+      quality: 1,
     });
 
     if (!result.canceled && result.assets?.[0]?.uri) {
-      setSelectedImage(result.assets[0].uri);
+      setSelectedImage(result.assets[0].uri); // Imposta l'immagine selezionata in fullscreen
     }
   }
 
@@ -64,34 +61,39 @@ export default function App() {
     <View style={styles.container}>
       {selectedImage ? (
         <View style={styles.fullscreenContainer}>
+
           {/* Visualizzazione dell'immagine */}
           <Image source={{ uri: selectedImage }} style={styles.fullscreenImage} />
+
           {/* Pulsante per chiudere */}
           <TouchableOpacity style={styles.closeButton} onPress={() => setSelectedImage(null)}>
             <Ionicons name="close-circle" size={50} color="white" />
           </TouchableOpacity>
+
+          {/* Pulsante per inviare l'immagine */}
+          <TouchableOpacity style={styles.submitButton}>
+            <Ionicons name="checkmark-circle" size={50} color="white" />
+          </TouchableOpacity>
         </View>
       ) : (
         <CameraView ref={cameraRef} style={styles.camera} facing={facing} flashMode={flash}>
+
           {/* Pulsante per il flash */}
           <TouchableOpacity style={styles.flashButton} onPress={toggleFlash}>
-            <Ionicons
-              name={flash === 'off' ? 'flash-off' : 'flash'}
-              size={30}
-              color="white"
-            />
+            <Ionicons name={flash === 'off' ? 'flash-off' : 'flash'} size={30} color="white" />
           </TouchableOpacity>
           <View style={styles.bottomContainer}>
-            {/* Anteprima della galleria */}
+
+            {/* Pulsante della galleria */}
             <TouchableOpacity style={styles.galleryPreview} onPress={openGallery}>
-              <View style={styles.placeholder} />
+              <Ionicons name="images" size={30} color="white" />
             </TouchableOpacity>
-  
+
             {/* Pulsante per scattare la foto */}
             <TouchableOpacity style={styles.captureButton} onPress={takePhoto}>
               <View style={styles.captureCircle} />
             </TouchableOpacity>
-  
+
             {/* Pulsante per cambiare la fotocamera */}
             <TouchableOpacity style={styles.flipButton} onPress={toggleCameraFacing}>
               <Ionicons name="camera-reverse" size={30} color="white" />
@@ -101,7 +103,6 @@ export default function App() {
       )}
     </View>
   );
-  
 }
 
 const styles = StyleSheet.create({
@@ -123,7 +124,13 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: 'absolute',
-    top: 40,
+    bottom: 40,
+    left: 20,
+    zIndex: 10,
+  },
+  submitButton: {
+    position: 'absolute',
+    bottom: 40,
     right: 20,
     zIndex: 10,
   },
@@ -153,10 +160,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     overflow: 'hidden',
     backgroundColor: 'gray',
-  },
-  placeholder: {
-    flex: 1,
-    backgroundColor: 'lightgray',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   captureButton: {
     width: 80,

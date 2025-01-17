@@ -56,6 +56,7 @@ export default function RootLayout() {
     return (
       <Tab.Navigator
         screenOptions={({ route }) => ({
+          headerShown: false,
           tabBarIcon: ({ focused }) => (
             <View>
               {route.name === 'Home' && <HomeIcon focused={focused} width={25} height={25} />}
@@ -70,7 +71,7 @@ export default function RootLayout() {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                  <CameraIcon focused={focused} width={26} height={24} /> 
+                  <CameraIcon focused={focused} width={26} height={24} />
                 </View>
               )}
               {route.name === 'Favorite' && <HeartIcon focused={focused} width={25} height={25} />}
@@ -129,7 +130,7 @@ export default function RootLayout() {
           }
         })}
       >
-        <Tab.Screen name="Home" component={Homepage} 
+        <Tab.Screen name="Home" component={Homepage}
           options={{
             headerShown: false
           }}
@@ -137,7 +138,8 @@ export default function RootLayout() {
         <Tab.Screen name="Photo" component={Photo} options={{
           tabBarLabel: () => null,
           headerShown: false,
-        }} />
+        }}
+        />
         <Tab.Screen name="Favorite" component={Favorite} />
 
       </Tab.Navigator>
@@ -153,7 +155,7 @@ export default function RootLayout() {
           <Stack.Screen
             name="homepage"
             component={Tabs}
-            options={{ 
+            options={{
               headerShown: false,
               gestureEnabled: false,
             }}
