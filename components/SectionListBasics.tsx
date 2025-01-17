@@ -1,7 +1,7 @@
 import React, { useState, useEffect }  from 'react';
 import {SectionList, StyleSheet, Text, TextInput, View} from 'react-native';
 
-
+import HeaderWithSearch from '../components/ui/headerWithSearch';
 
 const styles = StyleSheet.create({
   container: {
@@ -176,15 +176,13 @@ export function SectionListBasics() {
   };
   return (
     <View style={styles.container}>
-      <Text style={styles.ListHeader}>List Title</Text>
 
-      <TextInput
-      style={search ? styles.textInputActive : styles.textInputStyle}
-      onChangeText={(text) => searchFilterFunction(text)}
-      value={search}
-      underlineColorAndroid="transparent"
-      placeholder="Search Here"
+      <HeaderWithSearch
+        title="Preferiti"
+        onSearch={searchFilterFunction}
+        fadedText = "Preferiti"
       />
+
       <SectionList
       sections={filteredDataSource}
       renderItem={({item}) => <Text style={styles.item}>{item}</Text>}

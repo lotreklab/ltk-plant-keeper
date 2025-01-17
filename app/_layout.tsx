@@ -55,6 +55,7 @@ export default function RootLayout() {
     return (
       <Tab.Navigator
         screenOptions={({ route }) => ({
+          headerShown: false,
           tabBarIcon: ({ focused }) => (
             <View>
               {route.name === 'Home' && <HomeIcon focused={focused} width={25} height={25} />}

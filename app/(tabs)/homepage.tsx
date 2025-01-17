@@ -14,6 +14,8 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import HeaderWithSearch from '../../components/ui/headerWithSearch';
+
 const { width } = Dimensions.get('window');
 
 export default function PlantLearningPage() {
@@ -45,27 +47,20 @@ export default function PlantLearningPage() {
     { image: require('@/assets/images/home-mini-3.png'), title: '#Cute' },
   ];
 
+  const handleSearch = (text) => {
+    console.log('Search text:', text);
+  };
+
   return (
     <View style={styles.container}>
       {/* Header */}
-      <Image source={require('@/assets/images/home-header.png')} style={styles.imageHeader} />
-
-      <View style={[styles.header, { paddingLeft: 24 }]}>
-        <Text style={styles.title}>Hello Taylor</Text>
-        <Text style={styles.subtitle}>Let's learn more about plants</Text>
-      </View>
-
-      {/* Search Bar */}
-      <View style={styles.searchBarContainer}>
-        <View style={styles.searchBar}>
-          <Ionicons name="search" size={20} color="#D2D2D2" style={styles.searchIcon} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search plants..."
-            placeholderTextColor="#D2D2D2"
-          />
-        </View>
-      </View>
+      <HeaderWithSearch
+        title="Hello Taylor"
+        subtitle="Let's learn more about plants"
+        onSearch={handleSearch}
+        showBackButton = {false}
+        fadedText = "Home"
+      />
 
       <ScrollView style={[styles.containerSafe, { paddingLeft: 16 }]} showsVerticalScrollIndicator={false}>
         <TouchableOpacity style={styles.button}>
@@ -111,37 +106,6 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     // alignItems: 'stretch',
   },
-  imageHeader: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    width: '100%',
-    height: 255,
-    resizeMode: "cover"
-  },
-  header: {
-    marginBottom: 20,
-    marginTop: 120,
-  },
-  title: {
-    fontSize: 21,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#FFFFFF',
-  },
-  sliderTitle: {
-    fontSize: 18,
-    color: '#36455A',
-    fontWeight: "700",
-    marginBottom: 14,
-  },
-  searchContainer: {
-    marginBottom: 20,
-  },
   button: {
     backgroundColor: '#fff',
     padding: 12,
@@ -184,26 +148,5 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 14,
   },
-  searchBarContainer: {
-    marginTop: 0,
-    paddingHorizontal: 20,
-    marginBottom: 40,
-  },
-  searchBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 50,
-    paddingHorizontal: 10,
-    elevation: 1,
-    height: 40,
-  },
-  searchIcon: {
-    marginRight: 10,
-  },
-  searchInput: {
-    flex: 1,
-    fontSize: 16,
-    color: '#333',
-  },
+  
 });
