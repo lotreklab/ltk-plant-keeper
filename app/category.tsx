@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useRoute } from '@react-navigation/native';
+import {FetchPlantsBySpecies, PlantSpecies} from '@/store/reducers/species';
+import { useDispatch, useSelector } from 'react-redux';
 
 import HeaderWithSearch from '../components/ui/headerWithSearch';
 
@@ -23,76 +26,44 @@ type CardData = {
   family: string;
 };
 
-const categoryData: CardData[] = [
-  {
-    id: '1',
-    image: require('@/assets/images/home-big-1.png'),
-    title: 'Plant 1',
-    subtitle: 'Subtitle 1',
-    tags: 'Tag1, Tag2',
-    description: 'A brief description of Plant 1.',
-    kingdom: 'Plantae',
-    family: 'Cactaceae',
-
-  },
-  {
-    id: '2',
-    image: require('@/assets/images/home-big-1.png'),
-    title: 'Plant 2',
-    subtitle: 'Subtitle 2',
-    tags: 'Tag3, Tag4',
-    description: 'A brief description of Plant 2.',
-    kingdom: 'Plantae-2',
-    family: 'Cactaceae-2',
-  },
-  {
-    id: '3',
-    image: require('@/assets/images/home-big-1.png'),
-    title: 'Plant3',
-    subtitle: 'Subtitle3',
-    tags: 'Tag3, Tag4',
-    description: 'A brief description of Plant3.',
-    kingdom: 'Plantae-3',
-    family: 'Cactaceae-3',
-  },
-  {
-    id: '4',
-    image: require('@/assets/images/home-big-1.png'),
-    title: 'Plant4',
-    subtitle: 'Subtitle4',
-    tags: 'Tag3, Tag4',
-    description: 'A brief description of Plant4.',
-    kingdom: 'Plantae-4',
-    family: 'Cactaceae-4',
-  },
-  // Add more cards as needed
-];
-
 export default function Category({ navigation }: { navigation: any }) {
+  const route = useRoute();
+  const { id } = route.params;
+
+  const dispatch = useDispatch();
+  const { variety, loading, error } = useSelector((state: PlantSpecies ) => state.species);
+  useEffect(()=>{
+    dispatch(FetchPlantsBySpecies(id))
+  },[])
+
+
+
   const renderCard = ({ item }: { item: CardData }) => (
     <View style={styles.card}>
-      <Image source={item.image} style={styles.cardImage} />
-      <View style={styles.cardTextContainer}>
-        <Text style={styles.cardTitle}>{item.title}</Text>
+      <TouchableOpacity style={styles.cardBtn} onPress={()=>{navigation.navigate("detail",{ id: item.id })}}>
+        <Image source={{uri: item.image_url}} style={styles.cardImage} />
+        <View style={styles.cardTextContainer}>
+          <Text style={styles.cardTitle}>{item.common_name}</Text>
 
-        <View style={styles.cardTextBoxWrapper}>
-          <View style={styles.cardTextBox}>
-            <Text style={styles.cardTags}>Kingdom</Text>
-            <Text style={styles.cardSubtitle}>{item.kingdom}</Text>
+          <View style={styles.cardTextBoxWrapper}>
+            <View style={styles.cardTextBox}>
+              <Text style={styles.cardTags}>Genus</Text>
+              <Text style={styles.cardSubtitle}>{item.genus}</Text>
+            </View>
+
+            <View style={styles.cardTextBox}>
+              <Text style={styles.cardTags}>Family</Text>
+              <Text style={styles.cardSubtitle}>{item.family}</Text>
+            </View>
           </View>
 
           <View style={styles.cardTextBox}>
-            <Text style={styles.cardTags}>Family</Text>
-            <Text style={styles.cardSubtitle}>{item.family}</Text>
+            <Text style={styles.cardTags}>Scientific Name</Text>
+            <Text style={styles.cardDescription}>{item.scientific_name}</Text>
           </View>
-        </View>
 
-        <View style={styles.cardTextBox}>
-          <Text style={styles.cardTags}>Description</Text>
-          <Text style={styles.cardDescription}>{item.description}</Text>
         </View>
-        
-      </View>
+      </TouchableOpacity>
     </View>
   );
 
@@ -114,7 +85,7 @@ export default function Category({ navigation }: { navigation: any }) {
 
       {/* Vertical List */}
       <FlatList
-        data={categoryData}
+        data={variety}
         renderItem={renderCard}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContainer}
@@ -138,6 +109,11 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#e9e9e9',
+  },
+  cardBtn: {
+    flexDirection: 'row',
+    flexGrow: 1,
+    flexShrink: 0,
   },
   cardTextBoxWrapper: {
     flexDirection: 'row',
