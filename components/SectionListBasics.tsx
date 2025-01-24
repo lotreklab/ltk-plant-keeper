@@ -1,6 +1,7 @@
 import React, { useState, useEffect }  from 'react';
 import {SectionList, StyleSheet, Text, TextInput, View} from 'react-native';
-
+import { useNavigation } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native';
 import HeaderWithSearch from '../components/ui/headerWithSearch';
 
 const styles = StyleSheet.create({
@@ -83,115 +84,26 @@ interface SectionListBasicsProps {
 }
 
 export function SectionListBasics({ data }: SectionListBasicsProps) {
-  const [search, setSearch] = useState('');
-  // Item type for the SectionList
-  interface Item {
-    title: string; // Section title (e.g. 'D', 'J', 'K', 'M')
-    data: string[]; // Data for the section (e.g. ['Devin', 'Dan', 'Dominic'])
-  }
-  // Data for the SectionList: https://reactnative.dev/docs/sectionlist
-  const [filteredDataSource, setFilteredDataSource] = useState<SectionListBasicsProps[]>(data);
-  const [masterDataSource, setMasterDataSource] = useState<Item[]>([]);
+  const navigation = useNavigation(); // Hook for navigation
 
-  useEffect(() => {
-    // For the purpose of this example, we will start with static data
-    // const staticResponseDataSections: Item[] = [
-    //     {
-    //       title: 'D',
-    //       data: ['Devin', 'Dan', 'Dominic']
-    //     },
-    //     {
-    //       title: 'J',
-    //       data: [
-    //         'Jackson',
-    //         'James',
-    //         'Jillian',
-    //         'Jimmy',
-    //         'Joel',
-    //         'John',
-    //         'Julie',
-    //       ],
-    //     },
-    //     {
-    //       title: 'K',
-    //       data: [
-    //         'Kackson',
-    //         'Kames',
-    //         'Killian',
-    //         'Kimmy',
-    //         'Koel',
-    //         'Kohn',
-    //         'Kulie',
-    //       ],
-    //     },
-    //     {
-    //       title: 'M',
-    //       data: [
-    //         'Mackson',
-    //         'Mames',
-    //         'Millian',
-    //         'Mimmy',
-    //         'Moel',
-    //         'Mohn',
-    //         'Mulie',
-    //       ],
-    //     },
-    // ];
-    // Fetch data from an API here
-    // TODO: Add API fetch here
-
-    /* fetch('')
-      .then((response) => response.json())
-      .then((responseJson) => {
-        setFilteredDataSource(responseJson);
-        setMasterDataSource(responseJson);
-      })
-      .catch((error) => {
-        console.error(error);
-      }); */
-      //setFilteredDataSource(staticResponseDataSections);
-      // setMasterDataSource(staticResponseDataSections);
-  }, []);
-
-  // const searchFilterFunction = (text: string) => {
-  //   // Check if searched text is not blank
-  //   if (text) {
-  //     // Inserted text is not blank
-  //     // Filter the masterDataSource and update FilteredDataSource
-  //     const newData = masterDataSource.map(function (item) {
-  //       // Applying filter for the inserted text in search bar
-  //       const textData = text.toUpperCase();
-  //       // Search inside the data array
-  //       const dataMatch = item.data.filter(dataItem => dataItem.toUpperCase().indexOf(textData) > -1);
-  //       // Return only the items that have a match in the data array
-  //       if (dataMatch.length > 0) {
-  //         return { ...item, data: dataMatch };
-  //       }
-  //       return null;
-  //     }).filter(item => item !== null) as Item[];
-  //     // Update FilteredDataSource with the newData
-  //     setFilteredDataSource(newData);
-  //     // Update Search Query
-  //     setSearch(text);
-  //   } else {
-  //     // Inserted text is blank
-  //     // Update FilteredDataSource with masterDataSource
-  //     setFilteredDataSource(masterDataSource);
-  //     // Update Search Query
-  //     setSearch(text);
-  //   }
-  // };
   return (
     <View style={styles.container}>
       <SectionList
-        sections={filteredDataSource}
-        renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
+        sections={data}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.item}
+            onPress={()=>{navigation.navigate("detail",{ id: item })}}
+          >
+            <Text style={styles.item}>{item}</Text>
+          </TouchableOpacity>
+        )}
         stickySectionHeadersEnabled={true}
-        renderSectionHeader={({section}) => (
+        renderSectionHeader={({ section }) => (
           <Text style={styles.sectionHeader}>{section.title}</Text>
         )}
-        keyExtractor={item => `basicListEntry-${item}`}
-        renderSectionFooter={() => <View style={{height: 24 }} />}
+        keyExtractor={(item, index) => `basicListEntry-${index}`}
+        renderSectionFooter={() => <View style={{ height: 24 }} />}
         style={{ paddingTop: 32 }}
       />
     </View>

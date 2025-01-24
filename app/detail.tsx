@@ -9,9 +9,12 @@ import {
   ScrollView
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useRoute } from '@react-navigation/native';
 
 export default function Detail({ navigation }: { navigation: any }) {
   const tags = ['Danger', 'Decoration'];
+  const route = useRoute();
+  const { id } = route.params;
 
   return (
     <ScrollView style={styles.container}>
@@ -49,7 +52,7 @@ export default function Detail({ navigation }: { navigation: any }) {
         </View>
 
         {/* Detail Title */}
-        <Text style={styles.title}>Circle Cactus</Text>
+        <Text style={styles.title}>{id}</Text>
 
         <View style={styles.cardTextBoxWrapper}>
           <View style={styles.cardTextBox}>

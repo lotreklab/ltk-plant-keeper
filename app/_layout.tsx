@@ -170,6 +170,9 @@ export default function RootLayout() {
           <Stack.Screen name="species" component={SpeciesScreen} options={
             { headerShown: false }
           }/>
+          <Stack.Screen name="detail" component={Detail} options={
+            { headerShown: false }
+          }/>
         </Stack.Navigator>
         </PersistGate>
       </Provider>
