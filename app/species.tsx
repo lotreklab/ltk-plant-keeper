@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { FetchSpecies, PlantSpecies } from '@/store/reducers/species';
 import HeaderWithSearch from '@/components/ui/headerWithSearch';
@@ -39,7 +39,6 @@ export default function SpeciesScreen() {
     setFilteredData(orderItems);
   }, [orderItems]);
 
-  if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>Error: {error}</Text>;
 
   return (
@@ -50,7 +49,13 @@ export default function SpeciesScreen() {
         fadedText="Specie"
       />
       <View style={styles.containerSafe}>
-        <SectionListBasics  data={filteredData} />
+        {loading ?
+          <View style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <ActivityIndicator size="large" color="#2DDA93" />
+          </View>
+        :
+          <SectionListBasics  data={filteredData} />
+        }
       </View>
     </View>
   );

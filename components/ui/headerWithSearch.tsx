@@ -3,6 +3,15 @@ import { View, Text, TextInput, Image, StyleSheet, TouchableOpacity  } from 'rea
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 
+type HeaderWithSearchProps = {
+  title: string;
+  subtitle?: string | null;
+  image?: any;
+  onSearch?: (text: string) => void;
+  showBackButton?: boolean;
+  fadedText?: string | null;
+};
+
 const HeaderWithSearch = ({
   title,
   subtitle = null,
@@ -10,7 +19,7 @@ const HeaderWithSearch = ({
   onSearch,
   showBackButton = true,
   fadedText = null
-}) => {
+}: HeaderWithSearchProps) => {
 
   const navigation = useNavigation();
 

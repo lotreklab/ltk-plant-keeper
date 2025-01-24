@@ -6,12 +6,18 @@ import {
   StyleSheet,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import HeaderWithSearch from '@/components/ui/headerWithSearch';
 
 //blank page with text in the middle
 export default function FavoriteScreen() {
   return (
     <View style={styles.container}>
-      <SectionListBasics />
+      <HeaderWithSearch
+        title="Preferiti"
+        showBackButton = {false}
+        fadedText = "Preferiti"
+      />
+      <SectionListBasics data={[]} />
     </View>
   );
 }

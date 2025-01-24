@@ -1,4 +1,4 @@
-import React, { useState, useEffect }  from 'react';
+import React, { useState, useEffect, useMemo }  from 'react';
 import {SectionList, StyleSheet, Text, TextInput, View} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native';
@@ -119,6 +119,12 @@ export function SectionListBasics({ data }: SectionListBasicsProps) {
 
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
+  const filterAlphabet = useMemo(() => {
+    return alphabet.filter(letter => {
+      return filteredDataSource.some(item => item.title === letter);
+    });
+  }, [alphabet, filteredDataSource]);
+
   const [activeLetter, setActiveLetter] = useState('');
 
   const onViewableItemsChanged = ({ viewableItems }) => {
@@ -152,8 +158,8 @@ export function SectionListBasics({ data }: SectionListBasicsProps) {
           itemVisiblePercentThreshold: 50,
         }}
       />
-      <View style={styles.alphabetBar}>
-        {alphabet.map((letter, index)  => (
+      {data.length > 0 && <View style={styles.alphabetBar}>
+        {filterAlphabet.map((letter, index)  => (
           <Text
             key={`alphabetLetter-${index}`}
             style={[
@@ -164,7 +170,7 @@ export function SectionListBasics({ data }: SectionListBasicsProps) {
             {letter}
           </Text>
         ))}
-      </View>
+      </View>}
     </View>
   );
 };
