@@ -40,7 +40,7 @@ export default function Category({ navigation }: { navigation: any }) {
 
   const renderCard = ({ item }: { item: CardData }) => (
     <View style={styles.card}>
-      <TouchableOpacity style={styles.cardBtn} onPress={()=>{navigation.navigate("detail",{ id: item.id })}}>
+      <TouchableOpacity style={styles.cardBtn} onPress={()=>{navigation.navigate("detail",{ id: item })}}>
         <Image source={{uri: item.image_url}} style={styles.cardImage} />
         <View style={styles.cardTextContainer}>
           <Text style={styles.cardTitle}>{item.common_name}</Text>
