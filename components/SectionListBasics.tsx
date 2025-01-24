@@ -142,6 +142,7 @@ export function SectionListBasics({ data }: SectionListBasicsProps) {
       <View style={styles.alphabetBar}>
         {alphabet.map(letter => (
           <Text
+            key={letter}
             style={[
               styles.alphabetLetter,
               activeLetter === letter && styles.activeLetter,
