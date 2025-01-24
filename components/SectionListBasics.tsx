@@ -93,7 +93,7 @@ export function SectionListBasics({ data }: SectionListBasicsProps) {
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.item}
-            onPress={()=>{navigation.navigate("detail",{ id: item })}}
+            onPress={()=>{navigation.navigate("category",{ id: item })}}
           >
             <Text style={styles.item}>{item}</Text>
           </TouchableOpacity>

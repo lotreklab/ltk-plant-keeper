@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useRoute } from '@react-navigation/native';
 
 import HeaderWithSearch from '../components/ui/headerWithSearch';
 
@@ -69,11 +70,14 @@ const categoryData: CardData[] = [
 ];
 
 export default function Category({ navigation }: { navigation: any }) {
+  const route = useRoute();
+  const { id } = route.params;
+
   const renderCard = ({ item }: { item: CardData }) => (
     <View style={styles.card}>
       <Image source={item.image} style={styles.cardImage} />
       <View style={styles.cardTextContainer}>
-        <Text style={styles.cardTitle}>{item.title}</Text>
+        <Text style={styles.cardTitle}>{item.title} - {id}</Text>
 
         <View style={styles.cardTextBoxWrapper}>
           <View style={styles.cardTextBox}>
