@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {
   View,
   Text,
@@ -10,11 +10,21 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import {FetchPlant, PlantSpecies} from '@/store/reducers/species';
+
 
 export default function Detail({ navigation }: { navigation: any }) {
   const tags = ['Danger', 'Decoration'];
   const route = useRoute();
   const { id } = route.params;
+
+  const dispatch = useDispatch();
+  const { variety, loading, error } = useSelector((state: PlantSpecies ) => state.species);
+  useEffect(()=>{
+    dispatch(FetchPlant(id))
+  },[])
+
 
   return (
     <ScrollView style={styles.container}>
@@ -26,7 +36,7 @@ export default function Detail({ navigation }: { navigation: any }) {
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Ionicons name="chevron-back-outline" size={24} color="#FFFFFF" />
         </TouchableOpacity>
-        
+
         <View style={styles.buttonWrapper}>
           <TouchableOpacity style={styles.absoluteButton}>
             <Ionicons name="heart-outline" size={24} color="#FFFFFF" />
@@ -192,5 +202,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
-  
+
 });

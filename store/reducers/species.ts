@@ -38,6 +38,14 @@ export const FetchPlantsBySpecies = createAsyncThunk(
   }
 );
 
+export const FetchPlant = createAsyncThunk(
+  'plants',
+  async (plantId) => {
+    const response = await axiosClient.get<Specie[]>(`plants/${plantId}/`);
+    return response.data;
+  }
+);
+
 export const speciesSlice = createSlice({
   name: 'species',
   initialState,
