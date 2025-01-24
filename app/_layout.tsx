@@ -16,12 +16,9 @@ import Homepage from './(tabs)/homepage';
 import Onboarding from './onboarding';
 import Favorite from './(tabs)/favorite';
 import Photo from './(tabs)/photo';
-<<<<<<< HEAD
 import Category from './category';
 import Detail from './detail';
-=======
 import SpeciesScreen from "./species";
->>>>>>> 102fab93a4c9dbc2630a33893f4cca0b53a08f8d
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
