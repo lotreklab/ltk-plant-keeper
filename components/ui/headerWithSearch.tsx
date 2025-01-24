@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     width: '100%',
     bottom: 0,
     height: 50,
-    marginBottom: -25
+    marginBottom: -25,
   },
   searchBar: {
     flexDirection: 'row',
@@ -132,6 +132,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     elevation: 1,
     height: 50,
+    boxShadow: '0px 0px 8px rgba(50, 50, 50, 0.1)',
   },
   searchIcon: {
     marginRight: 10,

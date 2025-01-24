@@ -44,12 +44,12 @@ const renderSmallCard = ({ item }: { item: { image: string; title: string } }) =
   </TouchableOpacity>
 );
 
-const HorizontalSlider = ({ title, data } : { title: string; data: Array<{ image: string; title: string; subtitle: string }>}) => (
+const HorizontalSlider = ({ title, data, render } : { title: string; data: Array<{ image: string; title: string; subtitle: string }>; render: Array<any>}) => (
   <View style={{ marginLeft: 24 }}>
     <Text style={styles.Text_slider}>{title}</Text>
     <FlatList
       data={data}
-      renderItem={renderCard}
+      renderItem={render}
       keyExtractor={(item, index) => index.toString()}
       horizontal
       showsHorizontalScrollIndicator={false}
@@ -93,9 +93,9 @@ export default function PlantLearningPage() {
           </View>
         );
       case 'typePlants':
-        return <HorizontalSlider title="Tipologia di piante" data={cardsData} />;
+        return <HorizontalSlider title="Tipologia di piante" data={cardsData} render={renderCard} />;
       case 'lastPhotos':
-        return <HorizontalSlider title="Fotografie" data={smallCardsData} />;
+        return <HorizontalSlider title="Fotografie" data={smallCardsData} render={renderSmallCard}/>;
       default: return null;
     }
   }
