@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
+import HeaderWithSearch from '../components/ui/headerWithSearch';
+
 type CardData = {
   id: string;
   image: any; // Replace with string if using remote URIs
@@ -94,31 +96,21 @@ export default function Category({ navigation }: { navigation: any }) {
     </View>
   );
 
+  const handleSearch = (text) => {
+    console.log('Search text:', text);
+  };
+
   return (
     <View style={styles.container}>
 
       {/* Header */}
-      <Image source={require('@/assets/images/category-bg.png')} style={styles.imageHeader} />
+      <HeaderWithSearch
+        title="Category"
+        onSearch={handleSearch}
+        showBackButton = {true}
+        fadedText = "Home"
+      />
 
-
-      <View style={[styles.header, { paddingLeft: 24 }]}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Ionicons name="chevron-back-outline" size={24} color="#FFFFFF" />
-        </TouchableOpacity>
-        <Text style={styles.title}>Category</Text>
-      </View>
-
-      {/* Search Bar */}
-      <View style={styles.searchBarContainer}>
-        <View style={styles.searchBar}>
-          <Ionicons name="search" size={20} color="#D2D2D2" style={styles.searchIcon} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search plants..."
-            placeholderTextColor="#D2D2D2"
-          />
-        </View>
-      </View>
 
       {/* Vertical List */}
       <FlatList
@@ -137,40 +129,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F7F9FB',
   },
-  backButton: {
-    width: 32,
-    height: 32,
-    marginBottom: 16,
-  },
-  backButtonText: {
-    fontSize: 16,
-    marginLeft: 5,
-    color: '#333',
-  },
-  imageHeader: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    width: '100%',
-    height: 181,
-    resizeMode: "cover"
-  },
-  header: {
-    marginBottom: 0,
-    marginTop: 70,
-  },
-  title: {
-    fontSize: 21,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#FFFFFF',
-  },
   listContainer: {
-    paddingTop: 0,
+    paddingTop: 50,
     paddingBottom: 80,
   },
   card: {
@@ -226,22 +186,5 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingHorizontal: 20,
     marginBottom: 20,
-  },
-  searchBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 50,
-    paddingHorizontal: 10,
-    elevation: 1,
-    height: 40,
-  },
-  searchIcon: {
-    marginRight: 10,
-  },
-  searchInput: {
-    flex: 1,
-    fontSize: 16,
-    color: '#333',
-  },
+  }
 });
