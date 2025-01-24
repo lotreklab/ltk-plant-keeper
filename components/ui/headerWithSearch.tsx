@@ -5,11 +5,11 @@ import { useNavigation } from '@react-navigation/native';
 
 const HeaderWithSearch = ({
   title,
-  subtitle = '',
+  subtitle = null,
   image = require('@/assets/images/headerBg.png'),
   onSearch,
   showBackButton = true,
-  fadedText = ''
+  fadedText = null
 }) => {
 
   const navigation = useNavigation();

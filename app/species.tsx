@@ -75,11 +75,7 @@ export default function SpeciesScreen() {
         fadedText = "Specie"
       />
       <View style={styles.containerSafe}>
-        {filteredData.length === 0 ? (
-          <Text>No species found</Text>
-        ) : (
           <SectionListBasics data={filteredData} />
-        )}
       </View>
     </View>
   );
