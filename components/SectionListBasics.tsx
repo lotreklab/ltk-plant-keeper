@@ -102,6 +102,19 @@ interface SectionListBasicsProps {
 }
 
 export function SectionListBasics({ data }: SectionListBasicsProps) {
+  const [search, setSearch] = useState('');
+  // Item type for the SectionList
+  interface Item {
+    title: string; // Section title (e.g. 'D', 'J', 'K', 'M')
+    data: string[]; // Data for the section (e.g. ['Devin', 'Dan', 'Dominic'])
+  }
+  // Data for the SectionList: https://reactnative.dev/docs/sectionlist
+  const [filteredDataSource, setFilteredDataSource] = useState<SectionListBasicsProps[]>(data);
+  const [masterDataSource, setMasterDataSource] = useState<Item[]>([]);
+  useEffect(() => {
+    setFilteredDataSource(data);
+  }, [data]);
+
   const navigation = useNavigation(); // Hook for navigation
 
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
@@ -140,8 +153,9 @@ export function SectionListBasics({ data }: SectionListBasicsProps) {
         }}
       />
       <View style={styles.alphabetBar}>
-        {alphabet.map(letter => (
+        {alphabet.map((letter, index)  => (
           <Text
+            key={`alphabetLetter-${index}`}
             style={[
               styles.alphabetLetter,
               activeLetter === letter && styles.activeLetter,

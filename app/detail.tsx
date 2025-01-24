@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     padding: 16,
+    paddingTop: 40,
     position: 'relative',
   },
   backButton: {
