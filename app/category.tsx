@@ -40,7 +40,7 @@ export default function Category({ navigation }: { navigation: any }) {
 
   const renderCard = ({ item }: { item: CardData }) => (
     <View style={styles.card}>
-      <TouchableOpacity onPress={()=>{navigation.navigate("detail",{ id: item.id })}}>
+      <TouchableOpacity style={styles.cardBtn} onPress={()=>{navigation.navigate("detail",{ id: item.id })}}>
         <Image source={{uri: item.image_url}} style={styles.cardImage} />
         <View style={styles.cardTextContainer}>
           <Text style={styles.cardTitle}>{item.common_name}</Text>
@@ -109,6 +109,11 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#e9e9e9',
+  },
+  cardBtn: {
+    flexDirection: 'row',
+    flexGrow: 1,
+    flexShrink: 0,
   },
   cardTextBoxWrapper: {
     flexDirection: 'row',

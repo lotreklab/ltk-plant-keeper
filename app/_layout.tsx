@@ -143,8 +143,6 @@ export default function RootLayout() {
         }}
         />
         <Tab.Screen name="Favorite" component={Favorite} />
-        <Tab.Screen name="Category" component={Category} />
-        <Tab.Screen name="Detail" component={Detail} />
 
       </Tab.Navigator>
     );
