@@ -1,12 +1,10 @@
-import React, { useState, useEffect }  from 'react';
-import {SectionList, StyleSheet, Text, TextInput, View} from 'react-native';
-
-import HeaderWithSearch from '../components/ui/headerWithSearch';
+import React, { useState, useEffect, useRef }  from 'react';
+import {SectionList, StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 22,
+    paddingTop: 50,
     width: '100%',
   },
   ListHeader: {
@@ -75,7 +73,26 @@ const styles = StyleSheet.create({
     paddingRight: 24,
     color: '#000000', // Change text color when typing
     filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
-  }
+  },
+  alphabetBar: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    bottom: 0,
+    width: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 16,
+  },
+  alphabetLetter: {
+    fontSize: 14,
+    color: '#A1A8B9',
+    marginVertical: 4,
+  },
+  activeLetter: {
+    color: '#2DDA93',
+    fontWeight: 'bold',
+  },
 });
 
 interface SectionListBasicsProps {
@@ -92,6 +109,18 @@ export function SectionListBasics({ data }: SectionListBasicsProps) {
   // Data for the SectionList: https://reactnative.dev/docs/sectionlist
   const [filteredDataSource, setFilteredDataSource] = useState<SectionListBasicsProps[]>(data);
   const [masterDataSource, setMasterDataSource] = useState<Item[]>([]);
+
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+  const [activeLetter, setActiveLetter] = useState('');
+  const sectionListRef = useRef<SectionList<string>>(null);
+
+  const onViewableItemsChanged = ({ viewableItems }) => {
+    const currentSection = viewableItems.find(item => item.section);
+    if (currentSection) {
+      setActiveLetter(currentSection.section.title);
+    }
+  };
 
   useEffect(() => {
     // For the purpose of this example, we will start with static data
@@ -183,7 +212,8 @@ export function SectionListBasics({ data }: SectionListBasicsProps) {
   // };
   return (
     <View style={styles.container}>
-      <SectionList
+      <SectionList<any>
+        ref={sectionListRef}
         sections={filteredDataSource}
         renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
         stickySectionHeadersEnabled={true}
@@ -192,8 +222,24 @@ export function SectionListBasics({ data }: SectionListBasicsProps) {
         )}
         keyExtractor={item => `basicListEntry-${item}`}
         renderSectionFooter={() => <View style={{height: 24 }} />}
-        style={{ paddingTop: 32 }}
+        style={{ flex: 1 }}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={{
+          itemVisiblePercentThreshold: 50,
+        }}
       />
+      <View style={styles.alphabetBar}>
+        {alphabet.map(letter => (
+          <Text
+            style={[
+              styles.alphabetLetter,
+              activeLetter === letter && styles.activeLetter,
+            ]}
+          >
+            {letter}
+          </Text>
+        ))}
+      </View>
     </View>
   );
 };
