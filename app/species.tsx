@@ -28,7 +28,7 @@ export default function SpeciesScreen() {
     }, {});
 
     return Object.keys(groupedVariety).sort().map(letter => ({
-      title: "letter",
+      title: letter,
       data: groupedVariety[letter],
     }));
   }, [variety]);
