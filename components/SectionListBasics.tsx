@@ -2,12 +2,11 @@ import React, { useState, useEffect }  from 'react';
 import {SectionList, StyleSheet, Text, TextInput, View} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native';
-import HeaderWithSearch from '../components/ui/headerWithSearch';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 22,
+    paddingTop: 50,
     width: '100%',
   },
   ListHeader: {
@@ -76,7 +75,26 @@ const styles = StyleSheet.create({
     paddingRight: 24,
     color: '#000000', // Change text color when typing
     filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
-  }
+  },
+  alphabetBar: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    bottom: 0,
+    width: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 16,
+  },
+  alphabetLetter: {
+    fontSize: 14,
+    color: '#A1A8B9',
+    marginVertical: 4,
+  },
+  activeLetter: {
+    color: '#2DDA93',
+    fontWeight: 'bold',
+  },
 });
 
 interface SectionListBasicsProps {
@@ -85,6 +103,17 @@ interface SectionListBasicsProps {
 
 export function SectionListBasics({ data }: SectionListBasicsProps) {
   const navigation = useNavigation(); // Hook for navigation
+
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+  const [activeLetter, setActiveLetter] = useState('');
+
+  const onViewableItemsChanged = ({ viewableItems }) => {
+    const currentSection = viewableItems.find(item => item.section);
+    if (currentSection) {
+      setActiveLetter(currentSection.section.title);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -102,10 +131,26 @@ export function SectionListBasics({ data }: SectionListBasicsProps) {
         renderSectionHeader={({ section }) => (
           <Text style={styles.sectionHeader}>{section.title}</Text>
         )}
-        keyExtractor={(item, index) => `basicListEntry-${index}`}
-        renderSectionFooter={() => <View style={{ height: 24 }} />}
-        style={{ paddingTop: 32 }}
+        keyExtractor={item => `basicListEntry-${item}`}
+        renderSectionFooter={() => <View style={{height: 24 }} />}
+        style={{ flex: 1 }}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={{
+          itemVisiblePercentThreshold: 50,
+        }}
       />
+      <View style={styles.alphabetBar}>
+        {alphabet.map(letter => (
+          <Text
+            style={[
+              styles.alphabetLetter,
+              activeLetter === letter && styles.activeLetter,
+            ]}
+          >
+            {letter}
+          </Text>
+        ))}
+      </View>
     </View>
   );
 };
