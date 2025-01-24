@@ -1,7 +1,7 @@
 import React, { useState, useEffect }  from 'react';
 import {SectionList, StyleSheet, Text, TextInput, View} from 'react-native';
 
-import HeaderWithSearch from '../components/ui/headerWithSearch';
+import HeaderWithSearch from './ui/headerWithSearch';
 
 const styles = StyleSheet.create({
   container: {
@@ -92,66 +92,10 @@ export function SectionListBasics({ data }: SectionListBasicsProps) {
   // Data for the SectionList: https://reactnative.dev/docs/sectionlist
   const [filteredDataSource, setFilteredDataSource] = useState<SectionListBasicsProps[]>(data);
   const [masterDataSource, setMasterDataSource] = useState<Item[]>([]);
-
   useEffect(() => {
-    // For the purpose of this example, we will start with static data
-    // const staticResponseDataSections: Item[] = [
-    //     {
-    //       title: 'D',
-    //       data: ['Devin', 'Dan', 'Dominic']
-    //     },
-    //     {
-    //       title: 'J',
-    //       data: [
-    //         'Jackson',
-    //         'James',
-    //         'Jillian',
-    //         'Jimmy',
-    //         'Joel',
-    //         'John',
-    //         'Julie',
-    //       ],
-    //     },
-    //     {
-    //       title: 'K',
-    //       data: [
-    //         'Kackson',
-    //         'Kames',
-    //         'Killian',
-    //         'Kimmy',
-    //         'Koel',
-    //         'Kohn',
-    //         'Kulie',
-    //       ],
-    //     },
-    //     {
-    //       title: 'M',
-    //       data: [
-    //         'Mackson',
-    //         'Mames',
-    //         'Millian',
-    //         'Mimmy',
-    //         'Moel',
-    //         'Mohn',
-    //         'Mulie',
-    //       ],
-    //     },
-    // ];
-    // Fetch data from an API here
-    // TODO: Add API fetch here
+    setFilteredDataSource(data);
+  }, [data]);
 
-    /* fetch('')
-      .then((response) => response.json())
-      .then((responseJson) => {
-        setFilteredDataSource(responseJson);
-        setMasterDataSource(responseJson);
-      })
-      .catch((error) => {
-        console.error(error);
-      }); */
-      //setFilteredDataSource(staticResponseDataSections);
-      // setMasterDataSource(staticResponseDataSections);
-  }, []);
 
   // const searchFilterFunction = (text: string) => {
   //   // Check if searched text is not blank

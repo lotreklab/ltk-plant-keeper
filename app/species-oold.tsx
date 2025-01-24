@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import { SectionListBasics } from '@/components/SectionListBasics';
 import {
   View,
@@ -13,42 +13,9 @@ import HeaderWithSearch from '@/components/ui/headerWithSearch';
 export default function SpeciesScreen() {
   const dispatch = useDispatch();
   const { variety, loading, error } = useSelector((state: PlantSpecies ) => state.species);
-  const [filteredData, setFilteredData] = useState([]);
   useEffect(()=>{
     dispatch(FetchSpecies())
   },[])
-  useEffect(() => {
-    setFilteredData(orderItems);
-  }, []);
-
-
-  const searchFilterFunction = (text: string) => {
-    const newData = variety.filter(item => {
-      const itemData = item.common_name ? item.common_name.toUpperCase() : ''.toUpperCase();
-      const textData = text.toUpperCase();
-      return itemData.indexOf(textData) > -1;
-    });
-
-    const groupedVariety = newData.reduce((acc: { [x: string]: any[] }, item: { common_name: string[] }) => {
-      const firstLetter = item.common_name[0].toUpperCase();
-      if (!acc[firstLetter]) {
-        acc[firstLetter] = [];
-      }
-      acc[firstLetter].push(item.common_name);
-      return acc;
-    }, {});
-
-    const orderItems = Object.keys(groupedVariety).sort().map(letter => ({
-      title: letter,
-      data: groupedVariety[letter],
-    }));
-
-    setFilteredData(orderItems);
-    if (sectionListRef.current) {
-      sectionListRef.current.updateData(orderItems);
-      sectionListRef.current.scrollToTop();
-    }
-  };
 
   const orderItems = useMemo(() => {
     const groupedVariety = variety.reduce((acc: { [x: string]: any[]; }, item: { common_name: string[]; }) => {
@@ -73,16 +40,10 @@ export default function SpeciesScreen() {
     <View style={styles.container}>
       <HeaderWithSearch
         title="Specie"
-        onSearch={searchFilterFunction}
+        onSearch={() => {}}
         fadedText = "Specie"
       />
-      <View style={styles.containerSafe}>
-        {filteredData.length === 0 ? (
-          <Text>No species found</Text>
-        ) : (
-          <SectionListBasics data={filteredData} />
-        )}
-      </View>
+      <SectionListBasics data={orderItems} />
     </View>
   );
 }

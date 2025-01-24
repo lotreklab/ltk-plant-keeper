@@ -1,26 +1,19 @@
-import React, {useEffect, useMemo, useState} from 'react';
-import { SectionListBasics } from '@/components/SectionListBasics';
-import {
-  View,
-  Text,
-  StyleSheet,
-} from 'react-native';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import {FetchSpecies, PlantSpecies} from '@/store/reducers/species';
+import { FetchSpecies, PlantSpecies } from '@/store/reducers/species';
 import HeaderWithSearch from '@/components/ui/headerWithSearch';
+import { SectionListBasics } from '@/components/SectionListBasics-new';
 
-//blank page with text in the middle
 export default function SpeciesScreen() {
   const dispatch = useDispatch();
-  const { variety, loading, error } = useSelector((state: PlantSpecies ) => state.species);
+  const { variety, loading, error } = useSelector((state: PlantSpecies) => state.species);
   const [filteredData, setFilteredData] = useState([]);
-  useEffect(()=>{
-    dispatch(FetchSpecies())
-  },[])
-  useEffect(() => {
-    setFilteredData(orderItems);
-  }, []);
+  const sectionListRef = useRef(null);
 
+  useEffect(() => {
+    dispatch(FetchSpecies());
+  }, [dispatch]);
 
   const searchFilterFunction = (text: string) => {
     const newData = variety.filter(item => {
@@ -51,7 +44,7 @@ export default function SpeciesScreen() {
   };
 
   const orderItems = useMemo(() => {
-    const groupedVariety = variety.reduce((acc: { [x: string]: any[]; }, item: { common_name: string[]; }) => {
+    const groupedVariety = variety.reduce((acc: { [x: string]: any[] }, item: { common_name: string[] }) => {
       const firstLetter = item.common_name[0].toUpperCase();
       if (!acc[firstLetter]) {
         acc[firstLetter] = [];
@@ -66,6 +59,10 @@ export default function SpeciesScreen() {
     }));
   }, [variety]);
 
+  useEffect(() => {
+    setFilteredData(orderItems);
+  }, []);
+
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>Error: {error}</Text>;
 
@@ -74,7 +71,7 @@ export default function SpeciesScreen() {
       <HeaderWithSearch
         title="Specie"
         onSearch={searchFilterFunction}
-        fadedText = "Specie"
+        fadedText="Specie"
       />
       <View style={styles.containerSafe}>
         {filteredData.length === 0 ? (
