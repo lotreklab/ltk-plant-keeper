@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {
   View,
   Text,
@@ -9,21 +9,34 @@ import {
   ScrollView
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useRoute } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import {FetchPlant, PlantSpecies} from '@/store/reducers/species';
+
 
 export default function Detail({ navigation }: { navigation: any }) {
   const tags = ['Danger', 'Decoration'];
+  const route = useRoute();
+  const { id } = route.params;
+
+  const dispatch = useDispatch();
+  const { variety, loading, error } = useSelector((state: PlantSpecies ) => state.species);
+  useEffect(()=>{
+    dispatch(FetchPlant(id))
+  },[])
+
 
   return (
     <ScrollView style={styles.container}>
       {/* Background Image Box */}
       <ImageBackground
-        source={require('@/assets/images/home-big-2.png')} // Replace with your image
+        source={{uri: id.image_url}} // Replace with your image
         style={styles.imageBox}
       >
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Ionicons name="chevron-back-outline" size={24} color="#FFFFFF" />
         </TouchableOpacity>
-        
+
         <View style={styles.buttonWrapper}>
           <TouchableOpacity style={styles.absoluteButton}>
             <Ionicons name="heart-outline" size={24} color="#FFFFFF" />
@@ -49,17 +62,17 @@ export default function Detail({ navigation }: { navigation: any }) {
         </View>
 
         {/* Detail Title */}
-        <Text style={styles.title}>Circle Cactus</Text>
+        <Text style={styles.title}>{id.common_name}</Text>
 
         <View style={styles.cardTextBoxWrapper}>
           <View style={styles.cardTextBox}>
-            <Text style={styles.cardTags}>Kingdom</Text>
-            <Text style={styles.cardSubtitle}>Plantae</Text>
+            <Text style={styles.cardTags}>Genus</Text>
+            <Text style={styles.cardSubtitle}>{id?.main_species?.genus}</Text>
           </View>
 
           <View style={styles.cardTextBox}>
             <Text style={styles.cardTags}>Family</Text>
-            <Text style={styles.cardSubtitle}>Cactaeae</Text>
+            <Text style={styles.cardSubtitle}>{id?.main_species?.family}</Text>
           </View>
         </View>
 
@@ -67,12 +80,7 @@ export default function Detail({ navigation }: { navigation: any }) {
         <View style={styles.cardTextBox}>
           <Text style={styles.cardTags}>Description</Text>
           <Text style={styles.description}>
-            This cactus is a perfect choice for indoor spaces. It requires minimal water and adds a
-            touch of greenery to any room.
-            This cactus is a perfect choice for indoor spaces. It requires minimal water and adds a
-            touch of greenery to any room.
-            This cactus is a perfect choice for indoor spaces. It requires minimal water and adds a
-            touch of greenery to any room.
+            {id?.description}
           </Text>
         </View>
       </View>
@@ -194,5 +202,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
-  
+
 });

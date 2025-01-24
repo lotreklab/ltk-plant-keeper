@@ -1,12 +1,12 @@
 import React, { useState, useEffect }  from 'react';
 import {SectionList, StyleSheet, Text, TextInput, View} from 'react-native';
-
-import HeaderWithSearch from './ui/headerWithSearch';
+import { useNavigation } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 22,
+    paddingTop: 50,
     width: '100%',
   },
   ListHeader: {
@@ -75,7 +75,26 @@ const styles = StyleSheet.create({
     paddingRight: 24,
     color: '#000000', // Change text color when typing
     filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
-  }
+  },
+  alphabetBar: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    bottom: 0,
+    width: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 16,
+  },
+  alphabetLetter: {
+    fontSize: 14,
+    color: '#A1A8B9',
+    marginVertical: 4,
+  },
+  activeLetter: {
+    color: '#2DDA93',
+    fontWeight: 'bold',
+  },
 });
 
 interface SectionListBasicsProps {
@@ -96,48 +115,55 @@ export function SectionListBasics({ data }: SectionListBasicsProps) {
     setFilteredDataSource(data);
   }, [data]);
 
+  const navigation = useNavigation(); // Hook for navigation
 
-  // const searchFilterFunction = (text: string) => {
-  //   // Check if searched text is not blank
-  //   if (text) {
-  //     // Inserted text is not blank
-  //     // Filter the masterDataSource and update FilteredDataSource
-  //     const newData = masterDataSource.map(function (item) {
-  //       // Applying filter for the inserted text in search bar
-  //       const textData = text.toUpperCase();
-  //       // Search inside the data array
-  //       const dataMatch = item.data.filter(dataItem => dataItem.toUpperCase().indexOf(textData) > -1);
-  //       // Return only the items that have a match in the data array
-  //       if (dataMatch.length > 0) {
-  //         return { ...item, data: dataMatch };
-  //       }
-  //       return null;
-  //     }).filter(item => item !== null) as Item[];
-  //     // Update FilteredDataSource with the newData
-  //     setFilteredDataSource(newData);
-  //     // Update Search Query
-  //     setSearch(text);
-  //   } else {
-  //     // Inserted text is blank
-  //     // Update FilteredDataSource with masterDataSource
-  //     setFilteredDataSource(masterDataSource);
-  //     // Update Search Query
-  //     setSearch(text);
-  //   }
-  // };
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+  const [activeLetter, setActiveLetter] = useState('');
+
+  const onViewableItemsChanged = ({ viewableItems }) => {
+    const currentSection = viewableItems.find(item => item.section);
+    if (currentSection) {
+      setActiveLetter(currentSection.section.title);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <SectionList
-        sections={filteredDataSource}
-        renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
+        sections={data}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.item}
+            onPress={()=>{navigation.navigate("category",{ id: item })}}
+          >
+            <Text style={styles.item}>{item}</Text>
+          </TouchableOpacity>
+        )}
         stickySectionHeadersEnabled={true}
-        renderSectionHeader={({section}) => (
+        renderSectionHeader={({ section }) => (
           <Text style={styles.sectionHeader}>{section.title}</Text>
         )}
         keyExtractor={item => `basicListEntry-${item}`}
         renderSectionFooter={() => <View style={{height: 24 }} />}
-        style={{ paddingTop: 32 }}
+        style={{ flex: 1 }}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={{
+          itemVisiblePercentThreshold: 50,
+        }}
       />
+      <View style={styles.alphabetBar}>
+        {alphabet.map(letter => (
+          <Text
+            style={[
+              styles.alphabetLetter,
+              activeLetter === letter && styles.activeLetter,
+            ]}
+          >
+            {letter}
+          </Text>
+        ))}
+      </View>
     </View>
   );
 };

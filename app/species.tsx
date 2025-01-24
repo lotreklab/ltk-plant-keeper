@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState, useRef} from 'react';
 import { SectionListBasics } from '@/components/SectionListBasics';
 import {
   View,
@@ -14,6 +14,7 @@ export default function SpeciesScreen() {
   const dispatch = useDispatch();
   const { variety, loading, error } = useSelector((state: PlantSpecies ) => state.species);
   const [filteredData, setFilteredData] = useState([]);
+
   useEffect(()=>{
     dispatch(FetchSpecies())
   },[])
@@ -44,10 +45,7 @@ export default function SpeciesScreen() {
     }));
 
     setFilteredData(orderItems);
-    if (sectionListRef.current) {
-      sectionListRef.current.updateData(orderItems);
-      sectionListRef.current.scrollToTop();
-    }
+    
   };
 
   const orderItems = useMemo(() => {
