@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
-import {FetchPlantsBySpecies, PlantSpecies} from '@/store/reducers/species';
+import { FetchPlantsBySpecies, PlantState } from '@/store/reducers/plants';
 import { useDispatch, useSelector } from 'react-redux';
 
 import HeaderWithSearch from '../components/ui/headerWithSearch';
@@ -31,16 +31,17 @@ export default function Category({ navigation }: { navigation: any }) {
   const { id } = route.params;
 
   const dispatch = useDispatch();
-  const { variety, loading, error } = useSelector((state: PlantSpecies ) => state.species);
+  const {plant_list, error, loading} = useSelector((state: PlantState ) => state.plants);
   useEffect(()=>{
     dispatch(FetchPlantsBySpecies(id))
   },[])
 
 
 
+
   const renderCard = ({ item }: { item: CardData }) => (
     <View style={styles.card}>
-      <TouchableOpacity style={styles.cardBtn} onPress={()=>{navigation.navigate("detail",{ id: item })}}>
+      <TouchableOpacity style={styles.cardBtn} onPress={()=>{navigation.navigate("detail",{ id: item.id })}}>
         <Image source={{uri: item.image_url}} style={styles.cardImage} />
         <View style={styles.cardTextContainer}>
           <Text style={styles.cardTitle}>{item.common_name}</Text>
@@ -86,7 +87,7 @@ export default function Category({ navigation }: { navigation: any }) {
 
       {/* Vertical List */}
       <FlatList
-        data={variety}
+        data={plant_list}
         renderItem={renderCard}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContainer}

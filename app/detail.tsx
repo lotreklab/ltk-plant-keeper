@@ -11,7 +11,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import {FetchPlant, PlantSpecies} from '@/store/reducers/species';
+import {FetchPlant, PlantState} from '@/store/reducers/plants';
 
 
 export default function Detail({ navigation }: { navigation: any }) {
@@ -20,17 +20,17 @@ export default function Detail({ navigation }: { navigation: any }) {
   const { id } = route.params;
 
   const dispatch = useDispatch();
-  const { variety, loading, error } = useSelector((state: PlantSpecies ) => state.species);
-  useEffect(()=>{
-    dispatch(FetchPlant(id))
-  },[])
+   const {plant, error, loading} = useSelector((state: PlantState ) => state.plants);
+    useEffect(()=>{
+      dispatch(FetchPlant(id))
+    },{})
 
 
   return (
     <ScrollView style={styles.container}>
       {/* Background Image Box */}
       <ImageBackground
-        source={{uri: id.image_url}} // Replace with your image
+        source={{uri: plant?.image_url}} // Replace with your image
         style={styles.imageBox}
       >
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
@@ -62,17 +62,17 @@ export default function Detail({ navigation }: { navigation: any }) {
         </View>
 
         {/* Detail Title */}
-        <Text style={styles.title}>{id.common_name}</Text>
+        <Text style={styles.title}>{plant?.common_name}</Text>
 
         <View style={styles.cardTextBoxWrapper}>
           <View style={styles.cardTextBox}>
             <Text style={styles.cardTags}>Genus</Text>
-            <Text style={styles.cardSubtitle}>{id?.main_species?.genus}</Text>
+            <Text style={styles.cardSubtitle}>{plant?.main_species?.genus}</Text>
           </View>
 
           <View style={styles.cardTextBox}>
             <Text style={styles.cardTags}>Family</Text>
-            <Text style={styles.cardSubtitle}>{id?.main_species?.family}</Text>
+            <Text style={styles.cardSubtitle}>{plant?.main_species?.family}</Text>
           </View>
         </View>
 
@@ -80,7 +80,7 @@ export default function Detail({ navigation }: { navigation: any }) {
         <View style={styles.cardTextBox}>
           <Text style={styles.cardTags}>Description</Text>
           <Text style={styles.description}>
-            {id?.description}
+            {plant?.description}
           </Text>
         </View>
       </View>
