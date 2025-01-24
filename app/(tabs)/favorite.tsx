@@ -1,5 +1,5 @@
 import React from 'react';
-import { SectionListBasics } from '@/components/SectionListBasics-new';
+import { SectionListBasics } from '@/components/SectionListBasics';
 import {
   View,
   Text,
