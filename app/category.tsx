@@ -40,28 +40,30 @@ export default function Category({ navigation }: { navigation: any }) {
 
   const renderCard = ({ item }: { item: CardData }) => (
     <View style={styles.card}>
-      <Image source={{uri: item.image_url}} style={styles.cardImage} />
-      <View style={styles.cardTextContainer}>
-        <Text style={styles.cardTitle}>{item.common_name}</Text>
+      <TouchableOpacity onPress={()=>{navigation.navigate("detail",{ id: item.id })}}>
+        <Image source={{uri: item.image_url}} style={styles.cardImage} />
+        <View style={styles.cardTextContainer}>
+          <Text style={styles.cardTitle}>{item.common_name}</Text>
 
-        <View style={styles.cardTextBoxWrapper}>
-          <View style={styles.cardTextBox}>
-            <Text style={styles.cardTags}>Genus</Text>
-            <Text style={styles.cardSubtitle}>{item.genus}</Text>
+          <View style={styles.cardTextBoxWrapper}>
+            <View style={styles.cardTextBox}>
+              <Text style={styles.cardTags}>Genus</Text>
+              <Text style={styles.cardSubtitle}>{item.genus}</Text>
+            </View>
+
+            <View style={styles.cardTextBox}>
+              <Text style={styles.cardTags}>Family</Text>
+              <Text style={styles.cardSubtitle}>{item.family}</Text>
+            </View>
           </View>
 
           <View style={styles.cardTextBox}>
-            <Text style={styles.cardTags}>Family</Text>
-            <Text style={styles.cardSubtitle}>{item.family}</Text>
+            <Text style={styles.cardTags}>Scientific Name</Text>
+            <Text style={styles.cardDescription}>{item.scientific_name}</Text>
           </View>
-        </View>
 
-        <View style={styles.cardTextBox}>
-          <Text style={styles.cardTags}>Scientific Name</Text>
-          <Text style={styles.cardDescription}>{item.scientific_name}</Text>
         </View>
-
-      </View>
+      </TouchableOpacity>
     </View>
   );
 
