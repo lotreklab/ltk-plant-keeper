@@ -10,7 +10,6 @@ export default function SpeciesScreen() {
   const dispatch = useDispatch();
   const { variety, loading, error } = useSelector((state: PlantSpecies) => state.species);
   const [filteredData, setFilteredData] = useState([]);
-  const sectionListRef = useRef(null);
 
   useEffect(() => {
     dispatch(FetchSpecies());
@@ -51,7 +50,7 @@ export default function SpeciesScreen() {
         fadedText="Specie"
       />
       <View style={styles.containerSafe}>
-        <SectionListBasics ref={sectionListRef} data={filteredData} />
+        <SectionListBasics  data={filteredData} />
       </View>
     </View>
   );
