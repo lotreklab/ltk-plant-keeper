@@ -82,6 +82,7 @@ export default function Category({ navigation }: { navigation: any }) {
         fadedText = "Home"
       />
 
+      <View style={{height: 32}}></View>
 
       {/* Vertical List */}
       <FlatList
