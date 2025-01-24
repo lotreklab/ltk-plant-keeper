@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -14,11 +14,17 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { daysentence } from "@/store/reducers/motivational";
+
 import HeaderWithSearch from '../../components/ui/headerWithSearch';
 
 const { width } = Dimensions.get('window');
+import { useDispatch, useSelector } from 'react-redux';
+import { useFocusEffect, useNavigation} from '@react-navigation/native';
+
 
 export default function PlantLearningPage() {
+  const navigation=useNavigation();
   const renderCard = ({ item }: { item: { image: string; title: string; subtitle: string } }) => (
     <TouchableOpacity style={[styles.card, { width: 300, height: 160 }]}>
       <ImageBackground source={item.image} style={styles.cardBackground}>
@@ -46,6 +52,12 @@ export default function PlantLearningPage() {
     { image: require('@/assets/images/home-mini-2.png'), title: '#Homely' },
     { image: require('@/assets/images/home-mini-3.png'), title: '#Cute' },
   ];
+  const greenDay = useSelector(state => state.wordgarden.value)
+  const dispatch = useDispatch();
+  useEffect(() => {
+
+    dispatch(daysentence());
+  }, [dispatch]);
 
   const handleSearch = (text) => {
     console.log('Search text:', text);
@@ -56,14 +68,14 @@ export default function PlantLearningPage() {
       {/* Header */}
       <HeaderWithSearch
         title="Hello Taylor"
-        subtitle="Let's learn more about plants"
+        subtitle={greenDay}
         onSearch={handleSearch}
         showBackButton = {false}
         fadedText = "Home"
       />
 
-      <ScrollView style={[styles.containerSafe, { paddingLeft: 16 }]} showsVerticalScrollIndicator={false}>
-        <TouchableOpacity style={styles.button}>
+      <ScrollView style={[styles.containerSafe, { paddingLeft: 16, paddingTop: 48 }]} showsVerticalScrollIndicator={false}>
+        <TouchableOpacity style={styles.button} onPress={()=>{navigation.navigate("species")}}>
           <Ionicons name="leaf" size={20} color="#2DDA93" style={styles.searchIcon} />
           <Text style={styles.buttonText}>Species</Text>
         </TouchableOpacity>
@@ -148,5 +160,5 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 14,
   },
-  
+
 });

@@ -3,45 +3,36 @@ import { View, Text, TextInput, Image, StyleSheet, TouchableOpacity  } from 'rea
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 
-const HeaderWithSearch = ({ 
-  title, 
-  subtitle = '', 
-  image = require('@/assets/images/headerBg.png'), 
-  onSearch, 
-  showBackButton = true, 
+const HeaderWithSearch = ({
+  title,
+  subtitle = '',
+  image = require('@/assets/images/headerBg.png'),
+  onSearch,
+  showBackButton = true,
   fadedText = ''
 }) => {
 
   const navigation = useNavigation();
 
   return (
-    <>
-      <Image source={image} style={styles.imageHeader} />
-      <View 
-        style={[
-          styles.header,
-          !subtitle && styles.headerWithoutSubtitle
-        ]}
-      >
-        {showBackButton && (
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-            <Ionicons name="arrow-back" size={24} color="#fff" />
-          </TouchableOpacity>
-        )}
-          <Text
-            style={[
-              styles.title,
-              !subtitle && styles.titleWithoutSubtitle
-            ]}
-          >
-            {title}
-          </Text>
-          {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
-
-          {fadedText ? <Text style={styles.fadedText}>{fadedText}</Text> : null}
+    <View style={styles.View_wrapper}>
+      <Image
+        source={image}
+        style={styles.Image_bg}
+        resizeMode='cover'
+      />
+      <View style={[styles.View_wrapperContent, { paddingTop: showBackButton ? 32 : 72 }]}>
+        <View style={[styles.View_header]} >
+          {showBackButton && (
+            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+              <Ionicons name="arrow-back" size={24} color="#fff" />
+            </TouchableOpacity>
+          )}
+          <Text style={[!subtitle ? styles.titleWithoutSubtitle : styles.Text_title]}>{title}</Text>
+          {subtitle && <Text style={styles.subtitle} numberOfLines={3}>{subtitle}</Text>}
+          {fadedText && <Text style={styles.fadedText}>{fadedText}</Text>}
         </View>
 
-        {/* Search Bar */}
         <View style={styles.searchBarContainer}>
           <View style={styles.searchBar}>
             <Ionicons name="search" size={20} color="#D2D2D2" style={styles.searchIcon} />
@@ -51,37 +42,45 @@ const HeaderWithSearch = ({
               placeholderTextColor="#D2D2D2"
               onChangeText={(text) => onSearch(text)}
             />
+          </View>
         </View>
       </View>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  imageHeader: {
+  View_wrapper: {
+    width: '100%'
+  },
+  Image_bg: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     width: '100%',
-    height: 205,
-    resizeMode: "cover"
+    height: '100%',
+    resizeMode: "cover",
+    zIndex: 0
   },
-  header: {
-    marginBottom: 20,
-    marginTop: 120,
-    paddingLeft: 24,
+  View_wrapperContent: {
+    width: '100%',
+    paddingBottom: 42,
+    overflow: 'visible'
   },
-  headerWithoutSubtitle: {
-    marginBottom: 20,
-    marginTop: 105,
-    paddingLeft: 24,
+  View_header: {
+    paddingHorizontal: 24,
+  },
+  Text_title: {
+    fontSize: 21,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    marginBottom: 10
   },
   backButton: {
-    position: 'absolute',
-    top: -80,
-    left: 0,
-    padding: 20,
+    position: 'relative',
+    paddingVertical: 24,
+    paddingRight: 24,
   },
   fadedText: {
     position: 'absolute',
@@ -92,11 +91,7 @@ const styles = StyleSheet.create({
     fontSize: 67,
     fontWeight: 'bold',
   },
-  title: {
-    fontSize: 21,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-  },
+
   titleWithoutSubtitle: {
     fontSize: 30,
     fontWeight: 'bold',
@@ -105,6 +100,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 14,
     color: '#FFFFFF',
+    minHeight: 60
   },
   sliderTitle: {
     fontSize: 18,
@@ -118,11 +114,15 @@ const styles = StyleSheet.create({
   searchBarContainer: {
     marginTop: 0,
     paddingHorizontal: 20,
-    marginBottom: 40,
     shadowColor: '#B6B6B6',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.14,
     shadowRadius: 20,
+    position: 'absolute',
+    width: '100%',
+    bottom: 0,
+    height: 50,
+    marginBottom: -25
   },
   searchBar: {
     flexDirection: 'row',
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     paddingHorizontal: 10,
     elevation: 1,
-    height: 40,
+    height: 50,
   },
   searchIcon: {
     marginRight: 10,

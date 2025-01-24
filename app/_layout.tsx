@@ -16,8 +16,12 @@ import Homepage from './(tabs)/homepage';
 import Onboarding from './onboarding';
 import Favorite from './(tabs)/favorite';
 import Photo from './(tabs)/photo';
+<<<<<<< HEAD
 import Category from './category';
 import Detail from './detail';
+=======
+import SpeciesScreen from "./species";
+>>>>>>> 102fab93a4c9dbc2630a33893f4cca0b53a08f8d
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -72,7 +76,7 @@ export default function RootLayout() {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                  <CameraIcon focused={focused} width={26} height={24} /> 
+                  <CameraIcon focused={focused} width={26} height={24} />
                 </View>
               )}
               {route.name === 'Favorite' && <HeartIcon focused={focused} width={25} height={25} />}
@@ -131,7 +135,7 @@ export default function RootLayout() {
           }
         })}
       >
-        <Tab.Screen name="Home" component={Homepage} 
+        <Tab.Screen name="Home" component={Homepage}
           options={{
             headerShown: false
           }}
@@ -139,10 +143,12 @@ export default function RootLayout() {
         <Tab.Screen name="Photo" component={Photo} options={{
           tabBarLabel: () => null,
           headerShown: false,
-        }} />
+        }}
+        />
         <Tab.Screen name="Favorite" component={Favorite} />
         <Tab.Screen name="Category" component={Category} />
         <Tab.Screen name="Detail" component={Detail} />
+
       </Tab.Navigator>
     );
   }
@@ -156,12 +162,15 @@ export default function RootLayout() {
           <Stack.Screen
             name="homepage"
             component={Tabs}
-            options={{ 
+            options={{
               headerShown: false,
               gestureEnabled: false,
             }}
           />
           <Stack.Screen name="onboarding" component={Onboarding} options={
+            { headerShown: false }
+          }/>
+          <Stack.Screen name="species" component={SpeciesScreen} options={
             { headerShown: false }
           }/>
         </Stack.Navigator>
