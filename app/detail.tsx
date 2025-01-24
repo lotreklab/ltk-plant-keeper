@@ -20,7 +20,7 @@ export default function Detail({ navigation }: { navigation: any }) {
     <ScrollView style={styles.container}>
       {/* Background Image Box */}
       <ImageBackground
-        source={require('@/assets/images/home-big-2.png')} // Replace with your image
+        source={{uri: id.image_url}} // Replace with your image
         style={styles.imageBox}
       >
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
@@ -52,17 +52,17 @@ export default function Detail({ navigation }: { navigation: any }) {
         </View>
 
         {/* Detail Title */}
-        <Text style={styles.title}>{id}</Text>
+        <Text style={styles.title}>{id.common_name}</Text>
 
         <View style={styles.cardTextBoxWrapper}>
           <View style={styles.cardTextBox}>
-            <Text style={styles.cardTags}>Kingdom</Text>
-            <Text style={styles.cardSubtitle}>Plantae</Text>
+            <Text style={styles.cardTags}>Genus</Text>
+            <Text style={styles.cardSubtitle}>{id?.main_species?.genus}</Text>
           </View>
 
           <View style={styles.cardTextBox}>
             <Text style={styles.cardTags}>Family</Text>
-            <Text style={styles.cardSubtitle}>Cactaeae</Text>
+            <Text style={styles.cardSubtitle}>{id?.main_species?.family}</Text>
           </View>
         </View>
 
@@ -70,12 +70,7 @@ export default function Detail({ navigation }: { navigation: any }) {
         <View style={styles.cardTextBox}>
           <Text style={styles.cardTags}>Description</Text>
           <Text style={styles.description}>
-            This cactus is a perfect choice for indoor spaces. It requires minimal water and adds a
-            touch of greenery to any room.
-            This cactus is a perfect choice for indoor spaces. It requires minimal water and adds a
-            touch of greenery to any room.
-            This cactus is a perfect choice for indoor spaces. It requires minimal water and adds a
-            touch of greenery to any room.
+            {id?.description}
           </Text>
         </View>
       </View>
