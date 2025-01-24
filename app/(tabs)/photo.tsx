@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { Button, Image, Modal, StyleSheet, Text, TouchableOpacity, View, FlatList } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { CameraView, CameraType, FlashMode, useCameraPermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
@@ -10,6 +10,16 @@ export default function App() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      // Effetto di pulizia quando il componente si smonta
+      if (cameraRef.current) {
+        cameraRef.current.pausePreview(); // Sospendi l'anteprima
+        cameraRef.current = null; // Rilascia il riferimento
+      }
+    };
+  }, []);
 
   if (!permission) {
     return <View />;
@@ -139,7 +149,7 @@ const styles = StyleSheet.create({
   },
   flashButton: {
     position: 'absolute',
-    top: 20,
+    top: 80,
     left: 20,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     padding: 10,
@@ -147,7 +157,7 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     position: 'absolute',
-    bottom: 30,
+    bottom: 50,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

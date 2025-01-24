@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axiosClient from '@/api/axiosClient';
 import Specie from '@/types/specie';
+import Plant from '@/types/plant';
 // Define a type for the slice state
 
 export interface PlantSpecies {
@@ -19,8 +20,6 @@ const initialState: PlantSpecies = {
 };
 
 
-
-
 export const FetchSpecies = createAsyncThunk(
   'species',
   async () => {
@@ -28,6 +27,7 @@ export const FetchSpecies = createAsyncThunk(
     return response.data;
   }
 );
+
 
 export const speciesSlice = createSlice({
   name: 'species',

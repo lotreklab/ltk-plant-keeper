@@ -143,8 +143,6 @@ export default function RootLayout() {
         }}
         />
         <Tab.Screen name="Favorite" component={Favorite} />
-        <Tab.Screen name="Category" component={Category} />
-        <Tab.Screen name="Detail" component={Detail} />
 
       </Tab.Navigator>
     );
@@ -168,6 +166,12 @@ export default function RootLayout() {
             { headerShown: false }
           }/>
           <Stack.Screen name="species" component={SpeciesScreen} options={
+            { headerShown: false }
+          }/>
+          <Stack.Screen name="category" component={Category} options={
+            { headerShown: false }
+          }/>
+          <Stack.Screen name="detail" component={Detail} options={
             { headerShown: false }
           }/>
         </Stack.Navigator>
