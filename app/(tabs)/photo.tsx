@@ -1,15 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, Image, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { CameraView, CameraType, FlashMode, useCameraPermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import convertToBase64 from '@/utils/base64Utils';
 import axiosClientFile from '@/api/axiosClientFile';
 
-export default function App() {
+
+export default function App({ navigation }: { navigation: any }) {
   const [facing, setFacing] = useState<CameraType>('back');
   const [flash, setFlash] = useState<FlashMode>('off');
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef(null);
 
@@ -70,6 +72,7 @@ export default function App() {
   }
 
   const createPlant = (file:string) => {
+    setLoading(true); // Mostra il loader
     return convertToBase64(file)
     .then((base64String) => {
       return putPlant(base64String);
@@ -89,9 +92,12 @@ export default function App() {
       );
       console.log('File information:', infoResponse['result']['classification']['suggestions'][0]['name']
       );
+      setLoading(false);
+      navigation.navigate('detailretrieved', infoResponse)
       return infoResponse;
     })
     .catch((error) => {
+      setLoading(false);
       console.error('Error in createPlant:', error);
       throw error;
     });
@@ -143,6 +149,11 @@ export default function App() {
     <View style={styles.container}>
       {selectedImage ? (
         <View style={styles.fullscreenContainer}>
+           {loading && (
+            <View style={styles.loaderOverlay}>
+              <ActivityIndicator size="large" color="white" />
+            </View>
+          )}
 
           {/* Visualizzazione dell'immagine */}
           <Image source={{ uri: selectedImage }} style={styles.fullscreenImage} />
@@ -264,5 +275,16 @@ const styles = StyleSheet.create({
     height: 70,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  loaderOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 10,
   },
 });
