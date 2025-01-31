@@ -5,6 +5,7 @@ import wordgarden from "./motivational";
 import species from "./species";
 import plants from "./plants";
 import starred from "./starred";
+import genus from "./genus";
 
 export default combineReducers({
   counter,
@@ -13,4 +14,5 @@ export default combineReducers({
   species,
   plants,
   starred,
+  genus,
 })

@@ -15,7 +15,7 @@ const GoToSpecies = ({ navigation }: { navigation: any }) => {
         <Text style={styles.buttonText}>Species</Text>
       </TouchableOpacity> */}
       <Pressable
-        onPress={()=>{navigation.navigate("species")}}
+        onPress={()=>{navigation.navigate("genuses")}}
         style={({pressed}) => [
           { backgroundColor: pressed ? '#FBFDFF' : '#fff' }, styles.Btn_species,
         ]}

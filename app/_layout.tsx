@@ -19,6 +19,7 @@ import Photo from './(tabs)/photo';
 import Category from './category';
 import Detail from './detail';
 import SpeciesScreen from "./species";
+import GenusScreen from './genuses';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -166,6 +167,9 @@ export default function RootLayout() {
             { headerShown: false }
           }/>
           <Stack.Screen name="species" component={SpeciesScreen} options={
+            { headerShown: false }
+          }/>
+          <Stack.Screen name="genuses" component={GenusScreen} options={
             { headerShown: false }
           }/>
           <Stack.Screen name="category" component={Category} options={
