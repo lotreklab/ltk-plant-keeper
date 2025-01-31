@@ -6,7 +6,8 @@ import * as ImagePicker from 'expo-image-picker';
 import convertToBase64 from '@/utils/base64Utils';
 import axiosClientFile from '@/api/axiosClientFile';
 
-export default function App() {
+
+export default function App({ navigation }: { navigation: any }) {
   const [facing, setFacing] = useState<CameraType>('back');
   const [flash, setFlash] = useState<FlashMode>('off');
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -16,9 +17,10 @@ export default function App() {
 
   useEffect(() => {
     return () => {
+      // Effetto di pulizia quando il componente si smonta
       if (cameraRef.current) {
-        cameraRef.current.pausePreview();
-        cameraRef.current = null;
+        cameraRef.current.pausePreview(); // Sospendi l'anteprima
+        cameraRef.current = null; // Rilascia il riferimento
       }
     };
   }, []);
@@ -31,7 +33,7 @@ export default function App() {
     return (
       <View style={styles.container}>
         <Text style={styles.message}>We need your permission to show the camera</Text>
-        <Button style={styles.permission} onPress={requestPermission} title="Grant Permission" />
+        <Button onPress={requestPermission} title="Grant Permission" />
       </View>
     );
   }
@@ -65,73 +67,89 @@ export default function App() {
     });
 
     if (!result.canceled && result.assets?.[0]?.uri) {
-      setSelectedImage(result.assets[0].uri);
+      setSelectedImage(result.assets[0].uri); // Imposta l'immagine selezionata in fullscreen
     }
   }
 
-  async function createPlant(file: string) {
+  const createPlant = (file:string) => {
     setLoading(true); // Mostra il loader
-    try {
-      const base64String = await convertToBase64(file);
-      const uploadResponse = await putPlant(base64String);
+    return convertToBase64(file)
+    .then((base64String) => {
+      return putPlant(base64String);
+    })
+    .then((uploadResponse) => {
       const token = uploadResponse['access_token'];
-
-      const infoResponse = await new Promise((resolve) => {
+      console.log('Upload response token:', token);
+      
+      return new Promise((resolve) => {
         setTimeout(() => {
-          resolve(getImage(token));
+          resolve(getImage(token)); // Resolve the Promise with the result of getImage
         }, 10000);
       });
-
-      console.log('File information:', infoResponse);
-      return infoResponse;
-    } catch (error) {
-      console.error('Error in createPlant:', error);
-    } finally {
-      setLoading(false); // Nasconde il loader
-    }
-  }
-
-  async function putPlant(imageUri: string) {
-    try {
-      const response = await axiosClientFile.post(
-        '',
-        {
-          images: [`data:image/jpeg;base64,${imageUri}`],
-          similar_images: true,
-        },
-        {
-          params: {
-            details: 'common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,best_light_condition,best_soil_type,common_uses,cultural_significance,toxicity,best_watering',
-            language: 'en',
-            async: true,
-          },
-        }
+    })
+    .then((infoResponse) => {
+      console.log('File information:', infoResponse
       );
-      return response;
+      console.log('File information:', infoResponse['result']['classification']['suggestions'][0]['name']
+      );
+      setLoading(false);
+      navigation.navigate('detailretrieved', infoResponse)
+      return infoResponse;
+    })
+    .catch((error) => {
+      setLoading(false);
+      console.error('Error in createPlant:', error);
+      throw error;
+    });
+    
+
+  }
+
+
+  async function putPlant(imageUri:string){
+    try {
+      
+      // Ora puoi inviare la richiesta con l'immagine in base64
+      const response = await axiosClientFile.post('', {
+        "images": [`data:image/jpeg;base64,${imageUri}`],
+        "similar_images": true
+      },
+      {
+        params: {
+          details: "common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,best_light_condition,best_soil_type,common_uses,cultural_significance,toxicity,best_watering",
+          language: 'en',
+          async: true
+        }
+      }
+    );
+      return response
+   
     } catch (error) {
-      console.error('Errore:', error);
+      console.error("Errore:", error);
     }
   }
 
-  async function getImage(token: string) {
-    try {
-      const response = await axiosClientFile.get(`/${token}`, {
-        params: {
-          details: 'common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,best_light_condition,best_soil_type,common_uses,cultural_significance,toxicity,best_watering',
-        },
-      });
-      return response;
-    } catch (error) {
-      console.error('Errore:', error);
-    }
+  async function getImage(token:string) {   
+      try {
+        const response = await axiosClientFile.get(`/${token}`,{
+          params:{
+            details: "common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,best_light_condition,best_soil_type,common_uses,cultural_significance,toxicity,best_watering"
+          }
+        }
+        );
+        return response
+     
+      } catch (error) {
+        console.error("Errore:", error);
+      }
+ 
   }
 
   return (
     <View style={styles.container}>
       {selectedImage ? (
         <View style={styles.fullscreenContainer}>
-          {/* Mostra il loader se loading è true */}
-          {loading && (
+           {loading && (
             <View style={styles.loaderOverlay}>
               <ActivityIndicator size="large" color="white" />
             </View>
@@ -152,11 +170,13 @@ export default function App() {
         </View>
       ) : (
         <CameraView ref={cameraRef} style={styles.camera} facing={facing} flashMode={flash}>
+
           {/* Pulsante per il flash */}
           <TouchableOpacity style={styles.flashButton} onPress={toggleFlash}>
             <Ionicons name={flash === 'off' ? 'flash-off' : 'flash'} size={30} color="white" />
           </TouchableOpacity>
           <View style={styles.bottomContainer}>
+
             {/* Pulsante della galleria */}
             <TouchableOpacity style={styles.galleryPreview} onPress={openGallery}>
               <Ionicons name="images" size={30} color="white" />
@@ -183,19 +203,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     backgroundColor: 'black',
-  },
-  message: {
-    color: 'white',
-    fontSize: 20,
-    textAlign: 'center',
-  },
-  permission: {
-    backgroundColor: '#2DDA93',
-    paddingVertical: 16,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    alignSelf: 'center',
-    width: '90%',
   },
   fullscreenContainer: {
     flex: 1,

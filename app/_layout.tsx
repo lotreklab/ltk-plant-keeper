@@ -29,6 +29,7 @@ import HomeIcon from '@/components/ui/homeIcon';
 
 import { colors } from '@/config/theme';
 import Svg, { Defs, G, Path } from 'react-native-svg';
+import DetailFromRetrieve from './detail_from_retrieve';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -172,6 +173,9 @@ export default function RootLayout() {
             { headerShown: false }
           }/>
           <Stack.Screen name="detail" component={Detail} options={
+            { headerShown: false }
+          }/>
+           <Stack.Screen name="detailretrieved" component={DetailFromRetrieve} options={
             { headerShown: false }
           }/>
         </Stack.Navigator>
