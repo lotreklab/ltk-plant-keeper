@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect,useMemo,useState } from 'react';
 import {
   View,
   Text,
@@ -12,27 +12,24 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import {FetchPlant, PlantState} from '@/store/reducers/plants';
-import { toggleStarred } from '@/store/reducers/starred';
+import { selectStarredPlants, toggleStarred } from '@/store/reducers/starred';
 
 
 export default function Detail({ navigation }: { navigation: any }) {
   const tags = ['Danger', 'Decoration'];
   const route = useRoute();
   const { id } = route.params;
-  const starredArray = useSelector(state => (state as any).starred.value)
 
   const dispatch = useDispatch();
-   const {plant, error, loading} = useSelector((state: PlantState ) => state.plants);
-    useEffect(()=>{
-      dispatch(FetchPlant(id))
-    })
-  const [isStarred, setIsStarred] = useState(starredArray.some((el: any) => el.id === plant.id));
 
-  const toggleStarredInner = () => {
-    dispatch(toggleStarred(plant))
-    setIsStarred(starredArray.some((el: any) => `${el.id}` == `${plant.id}`))
-  }
+  const starredArray = useSelector(selectStarredPlants);
+  const {plant, error, loading} = useSelector((state: PlantState ) => state.plants);
 
+  const isStarred = useMemo(() => starredArray.some((el: any) => el.id === plant.id), [starredArray, plant])
+
+  useEffect(()=>{
+    dispatch(FetchPlant(id))
+  }, [])
 
   return (
     <ScrollView style={styles.container}>
@@ -46,7 +43,7 @@ export default function Detail({ navigation }: { navigation: any }) {
         </TouchableOpacity>
 
         <View style={styles.buttonWrapper}>
-          <TouchableOpacity style={styles.absoluteButton} onPress={() => toggleStarredInner()}>
+          <TouchableOpacity style={styles.absoluteButton} onPress={() => dispatch(toggleStarred(plant))}>
             <Ionicons name={isStarred ? "heart" : "heart-outline"} size={24} color="#FFFFFF" />
           </TouchableOpacity>
         </View>
