@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import {
   View,
   Text,
@@ -12,19 +12,18 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { FetchPlant, PlantState } from '@/store/reducers/plants';
+import {FetchPlant, PlantState} from '@/store/reducers/plants';
+import { selectStarredPlants, toggleStarred } from '@/store/reducers/starred';
+
 
 export default function Detail({ navigation }: { navigation: any }) {
   const tags = ['Danger', 'Decoration'];
+  const dispatch = useDispatch();
   const route = useRoute();
   const { id } = route.params;
 
-  const dispatch = useDispatch();
-  const { plant, error, loading } = useSelector((state: PlantState) => state.plants);
-
-  useEffect(() => {
-    dispatch(FetchPlant(id));
-  }, []);
+  const starredArray = useSelector(selectStarredPlants);
+  const {plant, error, loading} = useSelector((state: PlantState ) => state.plants);
 
   // Scroll Animation
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -47,6 +46,12 @@ export default function Detail({ navigation }: { navigation: any }) {
     extrapolate: 'clamp',
   });
 
+  const isStarred = useMemo(() => starredArray.some((el: any) => el.id === plant.id), [starredArray, plant])
+
+  useEffect(()=>{
+    dispatch(FetchPlant(id))
+  }, [])
+
   return (
     <View style={styles.container}>
       <Animated.ScrollView
@@ -67,11 +72,11 @@ export default function Detail({ navigation }: { navigation: any }) {
             <Ionicons name="chevron-back-outline" size={24} color="#FFFFFF" />
           </TouchableOpacity>
         </Animated.View>
-        
-       
+
+
         <View style={styles.buttonWrapper}>
-          <TouchableOpacity style={styles.absoluteButton}>
-            <Ionicons name="heart-outline" size={24} color="#FFFFFF" />
+          <TouchableOpacity style={styles.absoluteButton} onPress={() => dispatch(toggleStarred(plant))}>
+            <Ionicons name={isStarred ? "heart" : "heart-outline"} size={24} color="#FFFFFF" />
           </TouchableOpacity>
         </View>
 
