@@ -6,7 +6,7 @@ import Plant from '@/types/plant';
 
 
 const PlantList = () => {
-    const { data, loading, error } = useFetchData<Plant[]>(`species?page=3`);
+    const { data, loading, error } = useFetchData<Plant[]>(`species`);
     
     if (loading) {
         return (

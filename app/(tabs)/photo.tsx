@@ -3,6 +3,8 @@ import { Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-n
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { CameraView, CameraType, FlashMode, useCameraPermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
+import convertToBase64 from '@/utils/base64Utils';
+import axiosClientFile from '@/api/axiosClientFile';
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
@@ -67,6 +69,76 @@ export default function App() {
     }
   }
 
+  const createPlant = (file:string) => {
+    return convertToBase64(file)
+    .then((base64String) => {
+      return putPlant(base64String);
+    })
+    .then((uploadResponse) => {
+      const token = uploadResponse['access_token'];
+      console.log('Upload response token:', token);
+      
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(getImage(token)); // Resolve the Promise with the result of getImage
+        }, 10000);
+      });
+    })
+    .then((infoResponse) => {
+      console.log('File information:', infoResponse
+      );
+      console.log('File information:', infoResponse['result']['classification']['suggestions'][0]['name']
+      );
+      return infoResponse;
+    })
+    .catch((error) => {
+      console.error('Error in createPlant:', error);
+      throw error;
+    });
+    
+
+  }
+
+
+  async function putPlant(imageUri:string){
+    try {
+      
+      // Ora puoi inviare la richiesta con l'immagine in base64
+      const response = await axiosClientFile.post('', {
+        "images": [`data:image/jpeg;base64,${imageUri}`],
+        "similar_images": true
+      },
+      {
+        params: {
+          details: "common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,best_light_condition,best_soil_type,common_uses,cultural_significance,toxicity,best_watering",
+          language: 'en',
+          async: true
+        }
+      }
+    );
+      return response
+   
+    } catch (error) {
+      console.error("Errore:", error);
+    }
+  }
+
+  async function getImage(token:string) {   
+      try {
+        const response = await axiosClientFile.get(`/${token}`,{
+          params:{
+            details: "common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,best_light_condition,best_soil_type,common_uses,cultural_significance,toxicity,best_watering"
+          }
+        }
+        );
+        return response
+     
+      } catch (error) {
+        console.error("Errore:", error);
+      }
+ 
+  }
+
   return (
     <View style={styles.container}>
       {selectedImage ? (
@@ -81,7 +153,7 @@ export default function App() {
           </TouchableOpacity>
 
           {/* Pulsante per inviare l'immagine */}
-          <TouchableOpacity style={styles.submitButton}>
+          <TouchableOpacity style={styles.submitButton} onPress={() => createPlant(selectedImage)}>
             <Ionicons name="checkmark-circle" size={50} color="white" />
           </TouchableOpacity>
         </View>
