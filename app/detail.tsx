@@ -30,13 +30,19 @@ export default function Detail({ navigation }: { navigation: any }) {
   const scrollY = useRef(new Animated.Value(0)).current;
 
   const imageScale = scrollY.interpolate({
-    inputRange: [-300, 0, 0], // Scroll up expands, scroll down shrinks
+    inputRange: [-300, 0, 150], // Scroll up expands, scroll down shrinks
     outputRange: [2.5, 1, 1], // Max zoom at scroll
     extrapolate: 'clamp',
   });
 
+  const goBackTranslateY = scrollY.interpolate({
+    inputRange: [-300, 0, 150], // Scroll up expands, scroll down shrinks
+    outputRange: [-300, 1, 1], // Max zoom at scroll
+    extrapolate: 'clamp',
+  });
+
   const imageTranslateY = scrollY.interpolate({
-    inputRange: [-300, 0, 0],
+    inputRange: [-300, 0, 150],
     outputRange: [-100, 0, 0], // Moves up when pulling down
     extrapolate: 'clamp',
   });
@@ -52,15 +58,17 @@ export default function Detail({ navigation }: { navigation: any }) {
       >
         {/* Zooming Background Image */}
         <Animated.View style={[styles.imageBox, { transform: [{ scale: imageScale }, { translateY: imageTranslateY }] }]}>
-          <ImageBackground source={{ uri: plant?.image_url }} style={styles.image}>
-            
-          </ImageBackground>
+          <ImageBackground source={{ uri: plant?.image_url }} style={styles.image}></ImageBackground>
         </Animated.View>
 
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Ionicons name="chevron-back-outline" size={24} color="#FFFFFF" />
-        </TouchableOpacity>
 
+        <Animated.View style={[styles.goBackBox, { transform: [ { translateY: goBackTranslateY }] }]}>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+            <Ionicons name="chevron-back-outline" size={24} color="#FFFFFF" />
+          </TouchableOpacity>
+        </Animated.View>
+        
+       
         <View style={styles.buttonWrapper}>
           <TouchableOpacity style={styles.absoluteButton}>
             <Ionicons name="heart-outline" size={24} color="#FFFFFF" />
@@ -120,6 +128,12 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 240,
     overflow: 'hidden',
+  },
+  goBackBox: {
+    width: '100%',
+    height: 0,
+    overflow: 'visible',
+    top: -220,
   },
   image: {
     width: '100%',
