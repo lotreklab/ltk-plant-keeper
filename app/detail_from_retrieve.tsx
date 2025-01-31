@@ -18,7 +18,7 @@ export default function DetailFromRetrieve({ navigation}: { navigation: any }) {
   const infoResponse = route.params;
   const classification = infoResponse['result']['classification']
   const suggestion = classification['suggestions'][0]
-  const details = suggestion[0].details
+  const details = suggestion.details
 
 
   return (
