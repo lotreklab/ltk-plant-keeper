@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, Image, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { CameraView, CameraType, FlashMode, useCameraPermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
@@ -10,15 +10,15 @@ export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [flash, setFlash] = useState<FlashMode>('off');
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef(null);
 
   useEffect(() => {
     return () => {
-      // Effetto di pulizia quando il componente si smonta
       if (cameraRef.current) {
-        cameraRef.current.pausePreview(); // Sospendi l'anteprima
-        cameraRef.current = null; // Rilascia il riferimento
+        cameraRef.current.pausePreview();
+        cameraRef.current = null;
       }
     };
   }, []);
@@ -31,7 +31,7 @@ export default function App() {
     return (
       <View style={styles.container}>
         <Text style={styles.message}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="Grant Permission" />
+        <Button style={styles.permission} onPress={requestPermission} title="Grant Permission" />
       </View>
     );
   }
@@ -65,84 +65,77 @@ export default function App() {
     });
 
     if (!result.canceled && result.assets?.[0]?.uri) {
-      setSelectedImage(result.assets[0].uri); // Imposta l'immagine selezionata in fullscreen
+      setSelectedImage(result.assets[0].uri);
     }
   }
 
-  const createPlant = (file:string) => {
-    return convertToBase64(file)
-    .then((base64String) => {
-      return putPlant(base64String);
-    })
-    .then((uploadResponse) => {
+  async function createPlant(file: string) {
+    setLoading(true); // Mostra il loader
+    try {
+      const base64String = await convertToBase64(file);
+      const uploadResponse = await putPlant(base64String);
       const token = uploadResponse['access_token'];
-      console.log('Upload response token:', token);
-      
-      return new Promise((resolve) => {
+
+      const infoResponse = await new Promise((resolve) => {
         setTimeout(() => {
-          resolve(getImage(token)); // Resolve the Promise with the result of getImage
+          resolve(getImage(token));
         }, 10000);
       });
-    })
-    .then((infoResponse) => {
-      console.log('File information:', infoResponse
-      );
-      console.log('File information:', infoResponse['result']['classification']['suggestions'][0]['name']
-      );
+
+      console.log('File information:', infoResponse);
       return infoResponse;
-    })
-    .catch((error) => {
-      console.error('Error in createPlant:', error);
-      throw error;
-    });
-    
-
-  }
-
-
-  async function putPlant(imageUri:string){
-    try {
-      
-      // Ora puoi inviare la richiesta con l'immagine in base64
-      const response = await axiosClientFile.post('', {
-        "images": [`data:image/jpeg;base64,${imageUri}`],
-        "similar_images": true
-      },
-      {
-        params: {
-          details: "common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,best_light_condition,best_soil_type,common_uses,cultural_significance,toxicity,best_watering",
-          language: 'en',
-          async: true
-        }
-      }
-    );
-      return response
-   
     } catch (error) {
-      console.error("Errore:", error);
+      console.error('Error in createPlant:', error);
+    } finally {
+      setLoading(false); // Nasconde il loader
     }
   }
 
-  async function getImage(token:string) {   
-      try {
-        const response = await axiosClientFile.get(`/${token}`,{
-          params:{
-            details: "common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,best_light_condition,best_soil_type,common_uses,cultural_significance,toxicity,best_watering"
-          }
+  async function putPlant(imageUri: string) {
+    try {
+      const response = await axiosClientFile.post(
+        '',
+        {
+          images: [`data:image/jpeg;base64,${imageUri}`],
+          similar_images: true,
+        },
+        {
+          params: {
+            details: 'common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,best_light_condition,best_soil_type,common_uses,cultural_significance,toxicity,best_watering',
+            language: 'en',
+            async: true,
+          },
         }
-        );
-        return response
-     
-      } catch (error) {
-        console.error("Errore:", error);
-      }
- 
+      );
+      return response;
+    } catch (error) {
+      console.error('Errore:', error);
+    }
+  }
+
+  async function getImage(token: string) {
+    try {
+      const response = await axiosClientFile.get(`/${token}`, {
+        params: {
+          details: 'common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,best_light_condition,best_soil_type,common_uses,cultural_significance,toxicity,best_watering',
+        },
+      });
+      return response;
+    } catch (error) {
+      console.error('Errore:', error);
+    }
   }
 
   return (
     <View style={styles.container}>
       {selectedImage ? (
         <View style={styles.fullscreenContainer}>
+          {/* Mostra il loader se loading è true */}
+          {loading && (
+            <View style={styles.loaderOverlay}>
+              <ActivityIndicator size="large" color="white" />
+            </View>
+          )}
 
           {/* Visualizzazione dell'immagine */}
           <Image source={{ uri: selectedImage }} style={styles.fullscreenImage} />
@@ -159,13 +152,11 @@ export default function App() {
         </View>
       ) : (
         <CameraView ref={cameraRef} style={styles.camera} facing={facing} flashMode={flash}>
-
           {/* Pulsante per il flash */}
           <TouchableOpacity style={styles.flashButton} onPress={toggleFlash}>
             <Ionicons name={flash === 'off' ? 'flash-off' : 'flash'} size={30} color="white" />
           </TouchableOpacity>
           <View style={styles.bottomContainer}>
-
             {/* Pulsante della galleria */}
             <TouchableOpacity style={styles.galleryPreview} onPress={openGallery}>
               <Ionicons name="images" size={30} color="white" />
@@ -192,6 +183,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     backgroundColor: 'black',
+  },
+  message: {
+    color: 'white',
+    fontSize: 20,
+    textAlign: 'center',
+  },
+  permission: {
+    backgroundColor: '#2DDA93',
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    alignSelf: 'center',
+    width: '90%',
   },
   fullscreenContainer: {
     flex: 1,
@@ -264,5 +268,16 @@ const styles = StyleSheet.create({
     height: 70,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  loaderOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 10,
   },
 });
