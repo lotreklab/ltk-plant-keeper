@@ -113,6 +113,7 @@ export default function PlantLearningPage() {
           />
         );
       }}
+      style={{backgroundColor: '#FBFDFF'}}
       data={['btnSpecies', 'typePlants', 'lastPhotos']}
       renderItem={({ item }) => dataHomepage({ item })}
       ListFooterComponent={() => <View style={{ height: 48 }} />}
