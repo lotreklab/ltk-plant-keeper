@@ -7,7 +7,7 @@ import Plant from '@/types/plant';
 
 const PlantList = () => {
     const { data, loading, error } = useFetchData<Plant[]>(`species`);
-    
+
     if (loading) {
         return (
         <View style={styles.container}>
@@ -15,7 +15,7 @@ const PlantList = () => {
         </View>
         );
     }
-    
+
     if (error) {
         return (
         <View style={styles.container}>
@@ -23,24 +23,23 @@ const PlantList = () => {
         </View>
         );
     }
-    
+
     const results = data?.data || [];
     const next = data?.links.next;
     const count = data?.meta.total || [];
 
-    console.log(next)
     return (
         <View style={styles.container}>
         <Text>Plant count:{count} </Text>
         {results.map(plant => (
             <Text key={plant.id}>{plant.common_name}</Text>
         ))}
-      
+
         </View>
     );
     }
- 
-    
+
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,

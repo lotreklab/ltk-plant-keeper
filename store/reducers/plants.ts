@@ -20,12 +20,10 @@ const initialState: PlantState = {
 
 
 
-export const FetchPlantsBySpecies = createAsyncThunk(
+export const FetchPlantsByGenusID = createAsyncThunk(
   'plants',
   async (speciesId) => {
-    const response = await axiosClient.get<Plant[]>('plants', {params: {species: speciesId}});
-    console.log("speciesId", speciesId)
-    console.log("response", response)
+    const response = await axiosClient.get<Plant[]>('plants', {params: {genus_id: speciesId}});
     return response.data;
   }
 );
@@ -44,15 +42,15 @@ export const plantsSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder
-      .addCase(FetchPlantsBySpecies.pending, state => {
+      .addCase(FetchPlantsByGenusID.pending, state => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(FetchPlantsBySpecies.fulfilled, (state, action: PayloadAction<Plant[]>) => {
+      .addCase(FetchPlantsByGenusID.fulfilled, (state, action: PayloadAction<Plant[]>) => {
         state.plant_list = action.payload;
         state.loading = false;
       })
-      .addCase(FetchPlantsBySpecies.rejected, (state, action) => {
+      .addCase(FetchPlantsByGenusID.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Failed to fetch plants';
       })

@@ -20,7 +20,6 @@ const useFetchData = <T>(endpoint: string, params?: Record<string, any>) => {
 
       try {
         const response = await axiosClient.get<T>(endpoint, { params });
-        console.log(response);
 
         setState({ data: response, loading: false, error: null });
       } catch (error: any) {

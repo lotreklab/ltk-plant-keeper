@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
-import { FetchPlantsBySpecies, PlantState } from '@/store/reducers/plants';
+import { FetchPlantsByGenusID, PlantState } from '@/store/reducers/plants';
 import { useDispatch, useSelector } from 'react-redux';
 
 import HeaderWithSearch from '../components/ui/headerWithSearch';
@@ -33,7 +33,7 @@ export default function Category({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
   const {plant_list, error, loading} = useSelector((state: PlantState ) => state.plants);
   useEffect(()=>{
-    dispatch(FetchPlantsBySpecies(id))
+    dispatch(FetchPlantsByGenusID(id))
   },[])
 
 

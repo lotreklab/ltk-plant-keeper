@@ -4,11 +4,13 @@ import onboarding from "./onboarding";
 import wordgarden from "./motivational";
 import species from "./species";
 import plants from "./plants";
+import genus from "./genus";
 
 export default combineReducers({
   counter,
   onboarding,
   wordgarden,
   species,
-  plants
+  plants,
+  genus,
 })
