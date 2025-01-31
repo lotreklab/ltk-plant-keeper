@@ -99,9 +99,10 @@ const styles = StyleSheet.create({
 
 interface SectionListBasicsProps {
   data: Array<Object>;
+  path?: string;
 }
 
-export function SectionListBasics({ data }: SectionListBasicsProps) {
+export function SectionListBasics({ data, path }: SectionListBasicsProps) {
   const [search, setSearch] = useState('');
   // Item type for the SectionList
   interface Item {
@@ -141,16 +142,16 @@ export function SectionListBasics({ data }: SectionListBasicsProps) {
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.item}
-            onPress={()=>{navigation.navigate("category",{ id: item })}}
+            onPress={()=>{navigation.navigate(path, { id: item.id })}}
           >
-            <Text style={styles.item}>{item}</Text>
+            <Text style={styles.item}>{item.title}</Text>
           </TouchableOpacity>
         )}
         stickySectionHeadersEnabled={true}
         renderSectionHeader={({ section }) => (
           <Text style={styles.sectionHeader}>{section.title}</Text>
         )}
-        keyExtractor={item => `basicListEntry-${item}`}
+        keyExtractor={item => `basicListEntry-${item.id}`}
         renderSectionFooter={() => <View style={{height: 24 }} />}
         style={{ flex: 1 }}
         onViewableItemsChanged={onViewableItemsChanged}

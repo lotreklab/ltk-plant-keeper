@@ -25,13 +25,16 @@ export default function SpeciesScreen() {
       if (!acc[firstLetter]) {
         acc[firstLetter] = [];
       }
-      acc[firstLetter].push(item.common_name);
+      acc[firstLetter].push({
+        ...item,
+        title: item.common_name,
+      });
       return acc;
     }, {});
 
     return Object.keys(groupedVariety).sort().map(letter => ({
       title: letter,
-      data: groupedVariety[letter],
+      data: groupedVariety[letter]
     }));
   }, [variety]);
 
@@ -54,7 +57,7 @@ export default function SpeciesScreen() {
             <ActivityIndicator size="large" color="#2DDA93" />
           </View>
         :
-          <SectionListBasics  data={filteredData} />
+          <SectionListBasics  data={filteredData} path={'category'} />
         }
       </View>
     </View>
